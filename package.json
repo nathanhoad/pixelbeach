@@ -5,6 +5,7 @@
   "description": "A surfing game",
   "main": "index.js",
   "scripts": {
+    "watch": "rm -rf ./dist && webpack -w",
     "build": "rm -rf ./dist && webpack",
     "start": "node src/server",
     "test": "jest --runInBand"
@@ -17,7 +18,7 @@
     "Nathan Hoad",
     "Lilly Piri",
     "Ben Hoad",
-    "Jaap Rood"
+    "Jaap van Hardeveld"
   ],
   "license": "UNLICENSED",
   "bugs": {

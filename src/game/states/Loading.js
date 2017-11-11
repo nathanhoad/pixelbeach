@@ -1,10 +1,15 @@
 class LoadingState {
   preload() {
-    console.log('loading any stuff');
+    this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+    this.game.scale.setUserScale(1, 1);
+    this.game.renderer.renderSession.roundPixels = true;
+    Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
+
+    console.log('load any stuff');
   }
 
   create() {
-    console.log('done');
+    this.game.state.start('menu');
   }
 }
 

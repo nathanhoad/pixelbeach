@@ -14,9 +14,18 @@ class HighScores {
     });
 
     this.headerText.setTextBounds(0, 0, this.game.world.width - 5, 50);
-    this.headerText.inputEnabled = true;
-    this.headerText.events.onInputDown.add(() => {
-      this.game.state.start('game');
+
+    this.goBackText = this.game.add.text(10, 10, 'Back to menu', {
+      font: 'bold 16px Courier New',
+      fill: '#ffffff',
+      boundsAlignH: 'center',
+      boundsAlignV: 'middle'
+    });
+
+    this.goBackText.setTextBounds(0, this.game.world.height - 50, this.game.world.width - 5, 20);
+    this.goBackText.inputEnabled = true;
+    this.goBackText.events.onInputDown.add(() => {
+      this.game.state.start('menu');
     }, this);
 
     this.highScores = Immutable.Range(0, 5)

@@ -5,7 +5,7 @@
   "description": "A surfing game",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "rm -rf ./dist && webpack",
     "start": "node src/server",
     "test": "jest --runInBand"
   },
@@ -13,12 +13,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"
   },
-  "contributors": [
-    "Nathan Hoad",
-    "Lilly Piri",
-    "Ben Hoad",
-    "Jaap Rood"
-  ],
+  "contributors": ["Nathan Hoad", "Lilly Piri", "Ben Hoad", "Jaap Rood"],
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/Hackbit/nko2017-pixelbeach/issues"
@@ -27,11 +22,14 @@
   "dependencies": {
     "hapi": "^16.6.2",
     "inert": "^4.2.1",
-    "invariant": "^2.2.2"
+    "invariant": "^2.2.2",
+    "phaser-ce": "^2.9.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "expose-loader": "^0.7.3",
+    "html-webpack-plugin": "^2.30.1",
     "jest": "^21.2.1",
     "webpack": "^3.8.1"
   }

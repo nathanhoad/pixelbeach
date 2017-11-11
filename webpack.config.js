@@ -17,7 +17,7 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.json$|\.mp3$/,
+        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.json$|\.mp3$|\.wav$/,
         exclude: /spine\//,
         use: [
           {

@@ -9,6 +9,7 @@
     "watch": "rm -rf ./dist && webpack -w",
     "build": "rm -rf ./dist && webpack",
     "start": "node src/server",
+    "db": "knex",
     "test": "jest --runInBand"
   },
   "repository": {
@@ -35,9 +36,12 @@
     "invariant": "^2.2.2",
     "isomorphic-fetch": "^2.2.1",
     "joi": "^13.0.1",
+    "knex": "^0.14.0",
+    "pg": "^7.4.0",
     "phaser-ce": "^2.9.2",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "@orange-games/phaser-spine": "^3.0.9",

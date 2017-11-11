@@ -1,0 +1,26 @@
+{
+  "name": "nko2017-pixelbeach",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A surfing game",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"
+  },
+  "contributors": [
+    "Nathan Hoad",
+    "Lilly Piri",
+    "Ben Hoad",
+    "Jaap Rood"
+  ],
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Hackbit/nko2017-pixelbeach/issues"
+  },
+  "homepage": "https://github.com/Hackbit/nko2017-pixelbeach#readme",
+  "dependencies": {}
+}

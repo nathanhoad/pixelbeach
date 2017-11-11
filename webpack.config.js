@@ -17,12 +17,25 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.mp3$|\.wav$/,
+        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.json$|\.mp3$|\.wav$/,
+        exclude: /spine\//,
         use: [
           {
             loader: 'file-loader',
             options: {
               name: 'assets/[name]-[hash:base32:12].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.jpe?g$|\.png$|\.json$|\.atlas$/,
+        include: [Path.join(Config.paths.game.assets, 'spine')],
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[name].[ext]'
             }
           }
         ]

@@ -23,7 +23,7 @@ exports.create = (config, callback) => {
 	})
 
 	server.register([
-
+		require('./delivery')
 	], (err) => {
 		// can't recover from any of this, so blow up
 		Invariant(!err, `Failed to load plugin: ${err}`)

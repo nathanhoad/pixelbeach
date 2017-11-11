@@ -27,9 +27,10 @@ exports.getIndex = {
   },
 
   async handler(request, reply) {
-    const scores = await db('scores')
+    const scores = (await db('scores')
       .orderBy('highScore', 'desc')
-      .limit(5);
+      .limit(5)).map(r => Object.assign({}, r));
+
     reply(scores);
   }
 };
@@ -62,16 +63,19 @@ exports.postIndex = {
       deaths = previousScore.deaths + (request.payload.isDead ? 1 : 0);
     }
 
-    const score = await db('scores').insert(
-      {
-        id: uuid(),
-        userId,
-        score: request.payload.score,
-        highScore,
-        deaths,
-        createdAt: new Date()
-      },
-      '*'
+    const score = Object.assign(
+      {},
+      await db('scores').insert(
+        {
+          id: uuid(),
+          userId,
+          score: request.payload.score,
+          highScore,
+          deaths,
+          createdAt: new Date()
+        },
+        '*'
+      )
     );
 
     reply(score);

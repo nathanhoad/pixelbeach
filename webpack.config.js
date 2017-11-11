@@ -15,6 +15,17 @@ module.exports = {
         test: /\.js/,
         exclude: /node_modules/,
         loader: "babel-loader"
+      },
+      {
+        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.mp3$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "assets/[name]-[hash:base32:12].[ext]"
+            }
+          }
+        ]
       }
     ]
   },

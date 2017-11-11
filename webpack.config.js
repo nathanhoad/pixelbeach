@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: "./src/game/index.js",
   output: {
-    path: Path.resolve(__dirname, "dist", "bundle"),
+    path: Path.join(Config.paths.dist, "bundle"),
     publicPath: "/bundle/",
     filename: "game.js"
   },
@@ -20,7 +20,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: "../index.html"
+      filename: "../index.html",
+      template: Path.join(Config.paths.game.assets, "index.html.ejs")
     })
   ]
 };

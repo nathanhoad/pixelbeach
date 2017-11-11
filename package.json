@@ -33,7 +33,8 @@
     "inert": "^4.2.1",
     "invariant": "^2.2.2",
     "joi": "^13.0.1",
-    "phaser-ce": "^2.9.2"
+    "phaser-ce": "^2.9.2",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

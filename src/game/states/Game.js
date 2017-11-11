@@ -13,6 +13,19 @@ class GameState {
     // Create the player
     this.player = this.sprites.create(100, 100, 'player');
 
+    this.surfer = this.game.add.spine(0, 0, 'surfer');
+
+    this.surfer.setMixByName('idle', 'idle-up', 0.2);
+    this.surfer.setMixByName('idle', 'idle-down', 0.2);
+
+    this.surfer.setMixByName('idle-up', 'idle', 0.2);
+    this.surfer.setMixByName('idle-down', 'idle', 0.2);
+
+    this.surfer.setMixByName('idle-up', 'idle-down', 0.2);
+    this.surfer.setMixByName('idle-down', 'idle-up', 0.2);
+
+    this.player.addChild(this.surfer);
+
     // Collectables
     this.nextItemCountdown = 100;
 
@@ -89,6 +102,24 @@ class GameState {
             }
           }
         );
+
+        if (this.player.body.velocity.y < 0) {
+          if (this.surfer.anim !== 'idle-up') {
+            this.surfer.setAnimationByName(0, 'idle-up', true);
+            this.surfer.anim = 'idle-up';
+          }
+        } else if (this.player.body.velocity.y > 0) {
+          if (this.surfer.anim !== 'idle-down') {
+            this.surfer.setAnimationByName(0, 'idle-down', true);
+            this.surfer.anim = 'idle-down';
+          }
+        } else {
+          if (this.surfer.anim !== 'idle') {
+            this.surfer.setAnimationByName(0, 'idle', true);
+            this.surfer.anim = 'idle';
+          }
+        }
+
         break;
 
       case 'gameover':

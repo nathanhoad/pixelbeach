@@ -27,9 +27,12 @@
   },
   "homepage": "https://github.com/Hackbit/nko2017-pixelbeach#readme",
   "dependencies": {
+    "chance": "^1.0.12",
     "hapi": "^16.6.2",
+    "immutable": "^3.8.2",
     "inert": "^4.2.1",
     "invariant": "^2.2.2",
+    "joi": "^13.0.1",
     "phaser-ce": "^2.9.2"
   },
   "devDependencies": {

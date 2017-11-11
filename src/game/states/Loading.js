@@ -12,6 +12,7 @@ class LoadingState {
 
     // Load assets
     this.game.load.image('player', require('../assets/temp-surfer.png'));
+    this.game.load.image('item', require('../assets/temp-surfer.png'));
   }
 
   create() {

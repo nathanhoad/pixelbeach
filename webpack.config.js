@@ -3,7 +3,9 @@ const Config = require("./config");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/game/index.js",
+  entry: Config.env.development
+    ? "./src/game/index.js"
+    : "./src/game/preview.js",
   output: {
     path: Path.join(Config.paths.dist, "bundle"),
     publicPath: "/bundle/",
@@ -32,7 +34,10 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: "../index.html",
-      template: Path.join(Config.paths.game.assets, "index.html.ejs")
+      template: Path.join(
+        Config.paths.game.assets,
+        Config.env.development ? "index.html.ejs" : "index.preview.html.ejs"
+      )
     })
   ]
 };

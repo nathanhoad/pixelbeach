@@ -5,6 +5,7 @@
   "description": "A surfing game",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild": "npm run build",
     "watch": "rm -rf ./dist && webpack -w",
     "build": "rm -rf ./dist && webpack",
     "start": "node src/server",

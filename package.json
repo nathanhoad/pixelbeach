@@ -12,13 +12,22 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"
   },
-  "contributors": ["Nathan Hoad", "Lilly Piri", "Ben Hoad", "Jaap Rood"],
+  "contributors": [
+    "Nathan Hoad",
+    "Lilly Piri",
+    "Ben Hoad",
+    "Jaap Rood"
+  ],
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/Hackbit/nko2017-pixelbeach/issues"
   },
   "homepage": "https://github.com/Hackbit/nko2017-pixelbeach#readme",
-  "dependencies": {},
+  "dependencies": {
+    "hapi": "^16.6.2",
+    "inert": "^5.0.1",
+    "invariant": "^2.2.2"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

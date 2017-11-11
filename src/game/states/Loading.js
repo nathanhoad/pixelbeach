@@ -6,7 +6,7 @@ class LoadingState {
     // TODO: set the scale factor based on the browsers width/height
 
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-    this.game.scale.setUserScale(1, 1);
+    this.game.scale.setUserScale(1.5, 1.5);
     this.game.renderer.renderSession.roundPixels = true;
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 

@@ -1,30 +1,28 @@
-const Path = require("path");
-const Config = require("./config");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Path = require('path');
+const Config = require('./config');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: Config.env.development
-    ? "./src/game/index.js"
-    : "./src/game/preview.js",
+  entry: Config.env.development ? './src/game/index.js' : './src/game/preview.js',
   output: {
-    path: Path.join(Config.paths.dist, "bundle"),
-    publicPath: "/bundle/",
-    filename: "game.js"
+    path: Path.join(Config.paths.dist, 'bundle'),
+    publicPath: '/bundle/',
+    filename: 'game.js'
   },
   module: {
     rules: [
       {
         test: /\.js/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: 'babel-loader'
       },
       {
-        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.mp3$/,
+        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.mp3$|\.wav$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              name: "assets/[name]-[hash:base32:12].[ext]"
+              name: 'assets/[name]-[hash:base32:12].[ext]'
             }
           }
         ]
@@ -33,10 +31,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: "../index.html",
+      filename: '../index.html',
       template: Path.join(
         Config.paths.game.assets,
-        Config.env.development ? "index.html.ejs" : "index.preview.html.ejs"
+        Config.env.development ? 'index.html.ejs' : 'index.preview.html.ejs'
       )
     })
   ]

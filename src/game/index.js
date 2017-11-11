@@ -9,6 +9,8 @@ const game = new Phaser.Game(640, 480, Phaser.AUTO, 'game');
 game.state.add('loading', require('./states/Loading'));
 game.state.add('menu', require('./states/Menu'));
 game.state.add('game', require('./states/Game'));
+game.state.add('summary', require('./states/Summary'));
+game.state.add('highscores', require('./states/HighScores'));
 
 // Start the game already
 window.addEventListener('DOMContentLoaded', () => {

@@ -1,3 +1,5 @@
+const GlobalConfig = require('../../config')
+
 const port  = process.env.PORT || 5000
 const envName = process.env.NODE_ENV
 const env = {
@@ -13,5 +15,9 @@ module.exports = {
 		port: port,
 
 		debug: { request: ['error'] }
+	},
+
+	delivery: {
+		dist: GlobalConfig.paths.dist
 	}
 }

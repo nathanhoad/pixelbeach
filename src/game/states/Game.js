@@ -31,6 +31,11 @@ const ITEMS = {
 // For fast checking to which a sprite belongs using array.includes (collision)
 const COLLECTABLE_SPRITES = ITEMS.collectables.map(col => col.sprite);
 const OBSTACLE_SPRITES = ITEMS.obstacles.map(col => col.sprite);
+const MAX_POINTS = Math.max(...ITEMS.collectables.map(col => col.points));
+const COLLECTABLE_WEIGHTS = ITEMS.collectables.map(col => {
+  const penalty = Math.ceil((col.points + 1) / 3);
+  return MAX_POINTS - penalty;
+});
 
 class GameState {
   create() {
@@ -319,7 +324,9 @@ class GameState {
       const isObstacle = this.itemsChance.bool({
         likelihood: 5 + Math.min(55, this.lastCollisionDistance / 4000 * 55)
       });
-      const itemConfig = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables);
+      const itemConfig = isObstacle
+        ? this.itemsChance.pickone(ITEMS.obstacles)
+        : this.itemsChance.weighted(ITEMS.collectables, COLLECTABLE_WEIGHTS);
 
       const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
 

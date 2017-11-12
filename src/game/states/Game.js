@@ -8,13 +8,29 @@ const LOWER_BOUND = 400;
 let isEmitting = false;
 let timer, timerEvent;
 
-const skins = {
+const SKINS = {
   wetsuits: ['wetsuit.green', 'wetsuit.yellow', 'wetsuit.purple', 'wetsuit.red'],
   skins: ['skin.1', 'skin.2', 'skin.3', 'skin.4'],
   hairs: ['hair.blonde', 'hair.brunette', 'hair.ginger', 'hair.pink'],
   helmets: ['helmet'],
   boards: ['board.red', 'board.green', 'board.yellow', 'board.purple']
 };
+
+const ITEMS = {
+  collectables: [
+    { sprite: 'ducky', animates: false },
+    { sprite: 'beachball-1', animates: false },
+    { sprite: 'beachball-2', animates: false },
+    { sprite: 'cat-1', animates: true },
+    { sprite: 'cat-2', animates: true },
+    { sprite: 'cat-3', animates: true }
+  ],
+  obstacles: [{ sprite: 'obstacle', animates: false }, { sprite: 'demogorgon', animates: false }]
+};
+
+// For fast checking to which a sprite belongs using array.includes (collision)
+const COLLECTABLE_SPRITES = ITEMS.collectables.map(col => col.sprite);
+const OBSTACLE_SPRITES = ITEMS.obstacles.map(col => col.sprite);
 
 class GameState {
   create() {
@@ -62,14 +78,14 @@ class GameState {
     const playerChance = new Chance();
 
     const skinElements = [
-      playerChance.pickone(skins.wetsuits),
-      playerChance.pickone(skins.skins),
-      playerChance.pickone(skins.hairs),
-      playerChance.pickone(skins.boards)
+      playerChance.pickone(SKINS.wetsuits),
+      playerChance.pickone(SKINS.skins),
+      playerChance.pickone(SKINS.hairs),
+      playerChance.pickone(SKINS.boards)
     ];
 
     if (playerChance.bool({ likelihood: 25 })) {
-      skinElements.unshift(playerChance.pickone(skins.helmets));
+      skinElements.unshift(playerChance.pickone(SKINS.helmets));
     }
     const skin = this.surfer.createCombinedSkin('player', ...skinElements);
 
@@ -106,8 +122,10 @@ class GameState {
     // Keep track of how much air you should get
     this.playerMomentum = 1;
 
-    // Collectables
+    // Items
+    this.lastCollisionDistance = 0;
     this.nextItemCountdown = 100;
+    this.itemsChance = new Chance(); // put in a level seed here!
 
     this.collectableIcon = this.sprites.create(10, 10, 'ducky');
     this.collectableText = this.game.add.text(40, 10, '0', {
@@ -298,14 +316,20 @@ class GameState {
     // Create a new item
     if (this.nextItemCountdown === 0) {
       // TODO: have some smarts over whether to create a collectable or an obstacle
-      const isObstacle = Math.random() > 0.5;
-      const key = isObstacle ? 'obstacle' : 'ducky'; // TODO: other items?
+      const isObstacle = this.itemsChance.bool({
+        likelihood: 5 + Math.min(55, this.lastCollisionDistance / 4000 * 55)
+      });
+      const itemConfig = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables);
 
       const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
 
-      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, key);
-      item.scale.x = 1.5;
-      item.scale.y = 1.5;
+      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, itemConfig.sprite);
+      item.scale.x = itemConfig.scale || 1.5;
+      item.scale.y = itemConfig.scale || 1.5;
+      if (itemConfig.animates) {
+        item.animations.add('sheet');
+        item.animations.play('sheet', 7, true);
+      }
 
       if (isObstacle) {
         item.isObstacle = true;
@@ -324,13 +348,19 @@ class GameState {
 
       item.body.velocity.x = -200;
 
-      this.nextItemCountdown = 50 + Math.ceil(Math.random() * 300);
+      this.nextItemCountdown =
+        100 -
+        this.itemsChance.integer({
+          min: Math.min(50, Math.floor(this.lastCollisionDistance / 1000 * 50)),
+          max: 80
+        });
     } else {
       this.nextItemCountdown--;
     }
   }
 
   handleCollisions() {
+    this.lastCollisionDistance++;
     // Handle collions with obstacles and collectables
     this.game.physics.arcade.collide(
       this.player,
@@ -339,32 +369,39 @@ class GameState {
         // Nothing needs to bounce so this should never be called
       },
       (p, s) => {
-        switch (s.key) {
-          case 'item':
-          case 'ducky':
-            if (!s.isCollected) {
-              this.pickUp.play();
-              s.isCollected = true;
-              s.body.velocity.x = 0;
-              this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
-              // TODO: put a score thing in the corner where this flies to and add stuff to it
+        if (COLLECTABLE_SPRITES.includes(s.key)) {
+          if (!s.isCollected) {
+            this.pickUp.play();
+            s.isCollected = true;
+            s.body.velocity.x = 0;
+            this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
+            // TODO: put a score thing in the corner where this flies to and add stuff to it
 
-              // TODO: different points for different things
-              // and multipliers
-              Data.collectCollectable();
-            }
-            return false;
-
-          case 'obstacle':
-            // TODO: Custom death animation based on obstacle
-            // ...
-            this.fail.play();
-            this.gameOver();
-            return false;
-
-          default:
-            return true;
+            // TODO: different points for different things
+            // and multipliers
+            Data.collectCollectable();
+          }
+          return false;
+        } else if (OBSTACLE_SPRITES.includes(s.key)) {
+          this.lastCollisionDistance = 0;
+          this.fail.play();
+          this.gameOver();
+          return false;
+        } else {
+          return true;
         }
+
+        // switch (s.key) {
+        //   case 'item':
+        //   case 'ducky':
+
+        //   case 'obstacle':
+        //     // TODO: Custom death animation based on obstacle
+        //     // ...
+
+        //   default:
+        //     return true;
+        // }
       }
     );
   }

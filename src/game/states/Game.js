@@ -32,10 +32,10 @@ const ITEMS = {
     { sprite: 'seagull', animates: true, scale: 0.75, points: 10 }
   ],
   obstacles: [
-    { sprite: 'obstacle', animates: true, scale: 1 },
-    { sprite: 'demogorgon', animates: true, scale: 1 },
-    { sprite: 'shark', animates: true, scale: 1 },
-    { sprite: 'loose-seal', animates: true, scale: 0.75 }
+    { sprite: 'obstacle', animates: true, scale: 1, name: 'Mine' },
+    { sprite: 'demogorgon', animates: true, scale: 1, name: 'Demogorgon' },
+    { sprite: 'shark', animates: true, scale: 1, name: 'Shark' },
+    { sprite: 'loose-seal', animates: true, scale: 0.75, name: 'Loose Seal' }
   ]
 };
 
@@ -414,7 +414,9 @@ class GameState {
         } else if (OBSTACLE_SPRITES.includes(s.key)) {
           this.lastCollisionDistance = 0;
           this.fail.play();
-          this.gameOver(true);
+
+          const reason = ITEMS.obstacles.find(o => o.sprite === s.key).name;
+          this.gameOver(true, reason);
           return false;
         } else {
           return true;
@@ -439,11 +441,11 @@ class GameState {
     this.collectableText.text = Data.get('points');
   }
 
-  gameOver(died) {
+  gameOver(died, reason) {
     if (this.mode === 'gameover') return;
 
     if (died) {
-      Data.died();
+      Data.died(reason);
 
       this.game.camera.onFlashComplete.add(() => {
         this.game.camera.onFlashComplete.removeAll();

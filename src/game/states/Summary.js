@@ -23,6 +23,9 @@ class SummaryState {
       });
     } else {
       title = `YOU DIDN'T MAKE IT...`;
+      if (Data.get('diedReason')) {
+        title = `YOU HIT A ${Data.get('diedReason').toUpperCase()}!`;
+      }
       setTimeout(() => {
         Data.submitScore();
       }, 2000);
@@ -39,7 +42,7 @@ class SummaryState {
     this.game.add.tween(this.titleText).to({ alpha: 1 }, 500, 'Linear', true, 1700, 0);
 
     // You scored
-    this.scoreText = this.game.add.text(0, 0, 'You scored ' + Data.get('points', 0), {
+    this.scoreText = this.game.add.text(0, 0, `${Data.get('died') ? 'But y' : 'Y'}ou scored ${Data.get('points', 0)}`, {
       font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'center',

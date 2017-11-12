@@ -12,7 +12,9 @@ class Data {
       collectables: 0,
       points: 0,
       pointMultiplier: 1,
-      userName: null
+      userName: null,
+      died: false,
+      diedReason: null
     });
   }
 
@@ -23,13 +25,14 @@ class Data {
   reset() {
     this.state = this.state
       .set('died', false)
+      .set('diedReason', null)
       .set('collectables', 0)
       .set('points', 0)
       .set('pointMultiplier', 1);
   }
 
-  died() {
-    this.state = this.state.set('died', true);
+  died(reason) {
+    this.state = this.state.set('died', true).set('diedReason', reason);
   }
 
   addMultiplier() {

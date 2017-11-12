@@ -14,7 +14,19 @@ module.exports = {
       {
         test: /\.js/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            [
+              require('babel-preset-env'),
+              {
+                targets: {
+                  browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']
+                }
+              }
+            ]
+          ]
+        }
       },
       {
         test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.ico$|\.eot$|\.ttf$|\.woff$|\.json$|\.mp3$|\.wav$/,

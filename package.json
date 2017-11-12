@@ -16,17 +16,24 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"
   },
-  "contributors": [
-    "Nathan Hoad",
-    "Lilly Piri",
-    "Ben Hoad",
-    "Jaap van Hardeveld"
-  ],
+  "contributors": ["Nathan Hoad", "Lilly Piri", "Ben Hoad", "Jaap van Hardeveld"],
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/Hackbit/nko2017-pixelbeach/issues"
   },
   "homepage": "https://github.com/Hackbit/nko2017-pixelbeach#readme",
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": ["> 1%", "last 2 versions", "Firefox ESR"]
+          }
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "chance": "^1.0.12",
     "es6-promise": "^4.1.1",
@@ -49,6 +56,7 @@
     "@orange-games/phaser-spine": "^3.0.9",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "exports-loader": "^0.6.4",
     "expose-loader": "^0.7.3",
     "file-loader": "^1.1.5",

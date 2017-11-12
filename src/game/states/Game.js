@@ -3,7 +3,7 @@ const Data = require('../data');
 const ACCELERATION = 30;
 const MAX_VERTICAL_SPEED = 400;
 const UPPER_BOUND = 200;
-const LOWER_BOUND = 350;
+const LOWER_BOUND = 400;
 let isEmitting = false;
 
 class GameState {
@@ -83,7 +83,6 @@ class GameState {
     this.wash.y = this.player.y + 10;
 
     // Movement
-
     if (this.player.y < UPPER_BOUND) {
       // Player is in the sky
       if (this.player.body.gravity.y === 0) {
@@ -116,7 +115,6 @@ class GameState {
         if (this.player.body.velocity.y < 0 - MAX_VERTICAL_SPEED) {
           this.player.body.velocity.y = 0 - MAX_VERTICAL_SPEED;
         }
-        // }
       } else {
         this.playerMomentum = 1;
 
@@ -126,12 +124,14 @@ class GameState {
           if (this.player.body.velocity.y > MAX_VERTICAL_SPEED) {
             this.player.body.velocity.y = MAX_VERTICAL_SPEED;
           }
-        } else {
+        } else if (this.player.body.velocity.y > 0) {
           // Decelerate near the bottom
-          this.player.body.velocity.y -= ACCELERATION * 2;
+          this.player.body.velocity.y -= ACCELERATION * 5;
           if (this.player.body.velocity.y < 0) {
             this.player.body.velocity.y = 0;
           }
+        } else {
+          this.player.body.velocity.y -= 1;
         }
       }
     }
@@ -182,7 +182,9 @@ class GameState {
       const isObstacle = Math.random() > 0.5;
       const key = isObstacle ? 'obstacle' : 'ducky'; // TODO: other items?
 
-      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, 300, key);
+      const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
+
+      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, key);
       item.scale.x = 1.5;
       item.scale.y = 1.5;
 

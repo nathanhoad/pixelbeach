@@ -86,7 +86,7 @@ class SummaryState {
     }, this);
 
     // Fade in
-    this.game.camera.flash(Data.get('died') ? 0xff0000 : 0x000000, 300, true);
+    this.game.camera.flash(Data.get('died') ? 0xff0000 : 0xffffff, 300, true);
   }
 }
 

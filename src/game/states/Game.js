@@ -409,7 +409,7 @@ class GameState {
         } else if (OBSTACLE_SPRITES.includes(s.key)) {
           this.lastCollisionDistance = 0;
           this.fail.play();
-          this.gameOver();
+          this.gameOver(true);
           return false;
         } else {
           return true;
@@ -434,23 +434,32 @@ class GameState {
     this.collectableText.text = Data.get('points');
   }
 
-  gameOver() {
+  gameOver(died) {
     if (this.mode === 'gameover') return;
 
-    Data.died();
+    if (died) {
+      Data.died();
 
-    this.game.camera.onFlashComplete.add(() => {
-      this.game.camera.onFlashComplete.removeAll();
+      this.game.camera.onFlashComplete.add(() => {
+        this.game.camera.onFlashComplete.removeAll();
+        this.game.camera.onFadeComplete.add(() => {
+          this.game.camera.onFadeComplete.removeAll();
+          this.game.state.start('summary');
+        });
+        this.game.camera.fade(0xff0000, 200);
+      });
+      this.game.camera.flash(0xff0000, 200);
+      this.player.body.velocity.x = -200;
+    } else {
       this.game.camera.onFadeComplete.add(() => {
         this.game.camera.onFadeComplete.removeAll();
         this.game.state.start('summary');
       });
-      this.game.camera.fade(0xff0000, 200);
-    });
-    this.game.camera.flash(0xff0000, 200);
+      this.game.camera.fade(0xffffff, 400);
+    }
 
     this.player.body.velocity.y = 0;
-    this.player.body.velocity.x = -200;
+
     this.mode = 'gameover';
     this.surfer.anim = 'idle';
   }

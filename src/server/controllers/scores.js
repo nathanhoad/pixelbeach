@@ -20,6 +20,9 @@ const ScoreResource = Joi.object().keys({
     .optional(),
   score: Joi.number()
     .min(0)
+    .required(),
+  deaths: Joi.number()
+    .min(0)
     .required()
 });
 
@@ -34,7 +37,7 @@ exports.getIndex = {
   async handler(request, reply) {
     const scores = (await db('scores')
       .orderBy('highScore', 'desc')
-      .limit(5)).map(r => Object.assign({}, r));
+      .limit(10)).map(r => Object.assign({}, r));
 
     reply(scores);
   }
@@ -54,7 +57,8 @@ exports.postIndex = authKey => ({
   validate: {
     payload: {
       userName: Joi.reach(ScoreResource, 'userName').required(),
-      score: Joi.reach(ScoreResource, 'score').required()
+      score: Joi.reach(ScoreResource, 'score').required(),
+      deaths: Joi.reach(ScoreResource, 'deaths').required()
     }
   },
 
@@ -84,7 +88,7 @@ exports.postIndex = authKey => ({
       previousScore = previousScore[0];
 
       highScore = Math.max(previousScore.highScore, highScore);
-      deaths = previousScore.deaths + (request.payload.isDead ? 1 : 0);
+      deaths = previousScore.deaths + (request.payload.deaths ? 1 : 0);
     }
 
     const score = (await db('scores').insert(

@@ -1,6 +1,6 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('scores', table => {
-    table.uuid('id').index();
+    table.uuid('id').primary();
 
     table.uuid('userId');
     table.string('userName');

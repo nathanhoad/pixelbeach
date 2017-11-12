@@ -123,6 +123,7 @@ class GameState {
     this.playerMomentum = 1;
 
     // Items
+    this.lastCollisionDistance = 0;
     this.nextItemCountdown = 100;
     this.itemsChance = new Chance(); // put in a level seed here!
 
@@ -315,7 +316,9 @@ class GameState {
     // Create a new item
     if (this.nextItemCountdown === 0) {
       // TODO: have some smarts over whether to create a collectable or an obstacle
-      const isObstacle = this.itemsChance.bool({ likelihood: 40 });
+      const isObstacle = this.itemsChance.bool({
+        likelihood: 5 + Math.min(55, this.lastCollisionDistance / 4000 * 55)
+      });
       const itemConfig = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables);
 
       const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
@@ -345,13 +348,19 @@ class GameState {
 
       item.body.velocity.x = -200;
 
-      this.nextItemCountdown = 50 + Math.ceil(Math.random() * 300);
+      this.nextItemCountdown =
+        100 -
+        this.itemsChance.integer({
+          min: Math.min(50, Math.floor(this.lastCollisionDistance / 1000 * 50)),
+          max: 80
+        });
     } else {
       this.nextItemCountdown--;
     }
   }
 
   handleCollisions() {
+    this.lastCollisionDistance++;
     // Handle collions with obstacles and collectables
     this.game.physics.arcade.collide(
       this.player,
@@ -374,6 +383,7 @@ class GameState {
           }
           return false;
         } else if (OBSTACLE_SPRITES.includes(s.key)) {
+          this.lastCollisionDistance = 0;
           this.fail.play();
           this.gameOver();
           return false;

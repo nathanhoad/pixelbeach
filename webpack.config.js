@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: Config.env.development ? './src/game/index.js' : './src/game/preview.js',
+  entry: './src/game/index.js',
   output: {
     path: Path.join(Config.paths.dist, 'bundle'),
     publicPath: '/bundle/',

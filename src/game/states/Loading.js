@@ -21,6 +21,9 @@ class LoadingState {
     this.game.load.image('menu-cloud', require('../assets/cloud.png'));
     this.game.load.image('title', require('../assets/title.png'));
 
+    this.game.load.image('summary-background', require('../assets/summary-background.png'));
+    this.game.load.image('summary-surfer', require('../assets/summary-surfer.png'));
+
     this.game.load.image('player', require('../assets/player.png'));
 
     this.game.load.spine('surfer', require('../spines/surfer'));

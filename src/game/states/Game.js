@@ -50,6 +50,8 @@ const COLLECTABLE_WEIGHTS = ITEMS.collectables.map(col => {
 
 class GameState {
   create() {
+    Data.reset();
+
     this.game.add.sprite(0, 0, 'wave-background');
     const waveTop = this.game.add.sprite(150, 177, 'water-top');
     waveTop.animations.add('foam');
@@ -432,6 +434,8 @@ class GameState {
 
   gameOver() {
     if (this.mode === 'gameover') return;
+
+    Data.died();
 
     this.player.body.velocity.y = 0;
     this.gameOverCountdown = 60;

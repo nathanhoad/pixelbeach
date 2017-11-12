@@ -19,7 +19,7 @@ exports.register = (server, options, next) => {
       {
         method: 'POST',
         path: '/scores',
-        config: ScoresController.postIndex
+        config: ScoresController.postIndex(Config.auth.key)
       }
     ]);
 

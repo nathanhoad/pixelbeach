@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const JsonWebToken = require('jsonwebtoken');
 const Immutable = require('immutable');
 const Chance = require('chance');
 const db = require('../database');
@@ -13,6 +14,10 @@ const ScoreResource = Joi.object().keys({
     .min(1)
     .max(32)
     .required(),
+  userToken: Joi.string()
+    .allow(null)
+    .default(null)
+    .optional(),
   score: Joi.number()
     .min(0)
     .required()
@@ -35,7 +40,7 @@ exports.getIndex = {
   }
 };
 
-exports.postIndex = {
+exports.postIndex = authKey => ({
   auth: {
     strategy: 'token',
     mode: 'try'
@@ -87,8 +92,20 @@ exports.postIndex = {
         createdAt: new Date()
       },
       '*'
-    )).map(r => Object.assign({}, r))[0];
+    )).map(r =>
+      Object.assign(
+        {
+          userToken: JsonWebToken.sign(
+            {
+              uid: userId
+            },
+            authKey
+          )
+        },
+        r
+      )
+    )[0];
 
     reply(score);
   }
-};
+});

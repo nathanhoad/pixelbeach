@@ -18,12 +18,12 @@ const SKINS = {
 
 const ITEMS = {
   collectables: [
-    { sprite: 'ducky', animates: false },
-    { sprite: 'beachball-1', animates: false },
-    { sprite: 'beachball-2', animates: false },
-    { sprite: 'cat-1', animates: true },
-    { sprite: 'cat-2', animates: true },
-    { sprite: 'cat-3', animates: true }
+    { sprite: 'ducky', animates: false, points: 10 },
+    { sprite: 'beachball-1', animates: false, points: 10 },
+    { sprite: 'beachball-2', animates: false, points: 10 },
+    { sprite: 'cat-1', animates: true, points: 25 },
+    { sprite: 'cat-2', animates: true, points: 25 },
+    { sprite: 'cat-3', animates: true, points: 25 }
   ],
   obstacles: [{ sprite: 'obstacle', animates: false }, { sprite: 'demogorgon', animates: false }]
 };
@@ -371,6 +371,7 @@ class GameState {
       (p, s) => {
         if (COLLECTABLE_SPRITES.includes(s.key)) {
           if (!s.isCollected) {
+            let itemConfig = ITEMS.collectables.find(item => item.sprite === s.key);
             this.pickUp.play();
             s.isCollected = true;
             s.body.velocity.x = 0;
@@ -379,6 +380,7 @@ class GameState {
 
             // TODO: different points for different things
             // and multipliers
+            Data.addPoints(itemConfig.points);
             Data.collectCollectable();
           }
           return false;
@@ -407,7 +409,7 @@ class GameState {
   }
 
   handleScore() {
-    this.collectableText.text = Data.get('collectables');
+    this.collectableText.text = Data.get('points');
   }
 
   gameOver() {

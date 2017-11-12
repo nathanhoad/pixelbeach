@@ -17,11 +17,10 @@ class LoadingState {
 
     // Load assets
     this.game.load.image('player', require('../assets/player.png'));
-    this.game.load.image('item', require('../assets/temp-surfer.png'));
-    this.game.load.spine(
-      'surfer', //The key used for Phaser's cache
-      require('../spines/surfer') //The location of the spine's json file
-    );
+
+    this.game.load.image('ducky', require('../assets/ducky.png'));
+    this.game.load.spine('surfer', require('../spines/surfer'));
+
     this.game.load.image('obstacle', require('../assets/big-box.png'));
 
     //backgrounds
@@ -34,10 +33,17 @@ class LoadingState {
     this.game.load.image('wash', require('../assets/wash.png'));
     this.game.load.image('wash2', require('../assets/wash2.png'));
 
+<<<<<<< HEAD
     this.game.load.image('wave-froth-sml', require('../assets/wave-froth-sml.png'));
     this.game.load.image('wave-froth', require('../assets/wave-froth.png'));
     this.game.load.image('wave-froth-lrg', require('../assets/wave-froth-lrg.png'));
     this.game.load.image('wave-froth-hge', require('../assets/big-box.png'));
+=======
+    //audio
+    this.game.load.audio('pickup', require('../assets/pickup.wav'));
+    this.game.load.audio('fail', require('../assets/fail.wav'));
+    this.game.load.audio('trick2', require('../assets/trick2.wav'));
+>>>>>>> 1a8973a8d4e2c51e8c83e5af6ee2ca693bf4c7bb
   }
 
   create() {

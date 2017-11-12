@@ -19,5 +19,9 @@ module.exports = {
   knex: {
     client: 'pg',
     connection: process.env.DATABASE_URL || 'postgres://localhost:5432/pixelbeach_development'
+  },
+
+  auth: {
+    key: process.env.PIXELBEACH_AUTH_TOKEN || 'replace-me-with-a-real-token-or-be-very-insecure'
   }
 };

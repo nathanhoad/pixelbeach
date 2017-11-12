@@ -1,7 +1,9 @@
-const ACCELERATION = 50;
+const Data = require('../data');
+
+const ACCELERATION = 30;
 const MAX_VERTICAL_SPEED = 400;
 const UPPER_BOUND = 200;
-const LOWER_BOUND = 350;
+const LOWER_BOUND = 400;
 let isEmitting = false;
 
 class GameState {
@@ -15,7 +17,7 @@ class GameState {
     this.sprites.physicsBodyType = Phaser.Physics.ARCADE;
 
     // Create the player
-    this.player = this.sprites.create(200, 200, 'player');
+    this.player = this.sprites.create(200, LOWER_BOUND, 'player');
 
     this.surfer = this.game.add.spine(0, 0, 'surfer');
 
@@ -30,9 +32,6 @@ class GameState {
 
     this.player.addChild(this.surfer);
 
-    // Collectables
-    this.nextItemCountdown = 100;
-
     // Particles
     this.wash = this.game.add.emitter(100, 100, 200);
     // this.wash.gravity = 200;
@@ -40,8 +39,27 @@ class GameState {
     this.wash.maxParticleSpeed = new Phaser.Point(-100, 50);
     this.wash.minParticleSpeed = new Phaser.Point(-200, -50);
 
+    // Audio
+    this.pickUp = this.game.add.audio('pickup');
+    this.fail = this.game.add.audio('fail');
+    this.trick2 = this.game.add.audio('trick2');
+
     // this.player.addChild(this.wash);
     this.wash.start(false, 5000, 20);
+
+    // Keep track of how much air you should get
+    this.playerMomentum = 1;
+
+    // Collectables
+    this.nextItemCountdown = 100;
+
+    this.collectableIcon = this.sprites.create(10, 10, 'ducky');
+    this.collectableText = this.game.add.text(40, 10, '0', {
+      font: 'bold 20px Courier New',
+      fill: 'white',
+      boundsAlignH: 'left',
+      boundsAlignV: 'middle'
+    });
 
     // Mode
     this.mode = 'playing';
@@ -78,6 +96,7 @@ class GameState {
     this.wavefroth3.maxRotation = 0;
 
     this.game.add.sprite(0, LOWER_BOUND + 50, 'wave-bottom');
+    this.game.camera.flash('#000', 500, true);
   }
 
   update() {
@@ -86,7 +105,7 @@ class GameState {
         this.handlePlayer();
         this.handleItems();
         this.handleCollisions();
-
+        this.handleScore();
         break;
 
       case 'gameover':
@@ -104,32 +123,56 @@ class GameState {
     this.wash.y = this.player.y + 10;
 
     // Movement
-    if (this.game.input.activePointer.isDown) {
-      // The player has actually done something so we can start
-      // generating collectables and obstacles
-      this.hasStarted = true;
+    if (this.player.y < UPPER_BOUND) {
+      // Player is in the sky
+      if (this.player.body.gravity.y === 0) {
+        this.trick2.play();
+        // 500 is the lowest gravity
+        let gravity;
+        if (this.playerMomentum > 160) {
+          gravity = 450;
+        } else if (this.playerMomentum > 120) {
+          gravity = 700;
+        } else if (this.playerMomentum > 60) {
+          gravity = 900;
+        } else {
+          gravity = 1100;
+        }
 
-      if (this.player.y < UPPER_BOUND) {
-        this.player.body.velocity.y += ACCELERATION / 4;
-        // THIS IS THE TRICK AREA
-      } else {
+        this.player.body.gravity.y = gravity;
+        this.playerMomentum = 0;
+      }
+    } else {
+      this.player.body.gravity.y = 0;
+
+      if (this.game.input.activePointer.isDown) {
+        // The player has actually done something so we can start
+        // generating collectables and obstacles
+        this.hasStarted = true;
+
+        this.playerMomentum = Math.max(this.playerMomentum, this.player.y - UPPER_BOUND);
+
         this.player.body.velocity.y -= ACCELERATION;
         if (this.player.body.velocity.y < 0 - MAX_VERTICAL_SPEED) {
           this.player.body.velocity.y = 0 - MAX_VERTICAL_SPEED;
         }
-      }
-    } else {
-      // Player falls to the bottom of the wave
-      if (this.player.y < LOWER_BOUND) {
-        this.player.body.velocity.y += ACCELERATION;
-        if (this.player.body.velocity.y > MAX_VERTICAL_SPEED) {
-          this.player.body.velocity.y = MAX_VERTICAL_SPEED;
-        }
       } else {
-        // Decelerate near the bottom
-        this.player.body.velocity.y -= ACCELERATION;
-        if (this.player.body.velocity.y < 0) {
-          this.player.body.velocity.y = 0;
+        this.playerMomentum = 1;
+
+        // Player falls to the bottom of the wave
+        if (this.player.y < LOWER_BOUND) {
+          this.player.body.velocity.y += ACCELERATION;
+          if (this.player.body.velocity.y > MAX_VERTICAL_SPEED) {
+            this.player.body.velocity.y = MAX_VERTICAL_SPEED;
+          }
+        } else if (this.player.body.velocity.y > 0) {
+          // Decelerate near the bottom
+          this.player.body.velocity.y -= ACCELERATION * 5;
+          if (this.player.body.velocity.y < 0) {
+            this.player.body.velocity.y = 0;
+          }
+        } else {
+          this.player.body.velocity.y -= 1;
         }
       }
     }
@@ -178,7 +221,11 @@ class GameState {
     if (this.nextItemCountdown === 0) {
       // TODO: have some smarts over whether to create a collectable or an obstacle
       const isObstacle = Math.random() > 0.5;
-      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, 300, isObstacle ? 'obstacle' : 'item');
+      const key = isObstacle ? 'obstacle' : 'ducky'; // TODO: other items?
+
+      const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
+
+      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, key);
       item.scale.x = 1.5;
       item.scale.y = 1.5;
 
@@ -216,17 +263,24 @@ class GameState {
       (p, s) => {
         switch (s.key) {
           case 'item':
+          case 'ducky':
             if (!s.isCollected) {
+              this.pickUp.play();
               s.isCollected = true;
               s.body.velocity.x = 0;
               this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
               // TODO: put a score thing in the corner where this flies to and add stuff to it
+
+              // TODO: different points for different things
+              // and multipliers
+              Data.collectCollectable();
             }
             return false;
 
           case 'obstacle':
             // TODO: Custom death animation based on obstacle
             // ...
+            this.fail.play();
             this.gameOver();
             return false;
 
@@ -237,12 +291,19 @@ class GameState {
     );
   }
 
+  handleScore() {
+    this.collectableText.text = Data.get('collectables');
+  }
+
   gameOver() {
     if (this.mode === 'gameover') return;
 
     this.player.body.velocity.y = 0;
     this.gameOverCountdown = 60;
     this.mode = 'gameover';
+
+    // TODO: set animation
+    this.surfer.anim = 'idle';
   }
 
   handleGameOver() {
@@ -251,6 +312,12 @@ class GameState {
     } else {
       this.game.state.start('summary');
     }
+  }
+
+  render() {
+    this.game.debug.text(this.playerMomentum, 100, 20, 'red');
+    this.game.debug.text('in the sky? ' + (this.player.y < UPPER_BOUND), 100, 40, 'red');
+    this.game.debug.text('gravity' + this.player.body.gravity.y, 100, 60, 'green');
   }
 }
 

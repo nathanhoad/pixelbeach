@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const JsonWebToken = require('jsonwebtoken');
 const Immutable = require('immutable');
 const Chance = require('chance');
 const db = require('../database');
@@ -13,6 +14,10 @@ const ScoreResource = Joi.object().keys({
     .min(1)
     .max(32)
     .required(),
+  userToken: Joi.string()
+    .allow(null)
+    .default(null)
+    .optional(),
   score: Joi.number()
     .min(0)
     .required()
@@ -35,15 +40,35 @@ exports.getIndex = {
   }
 };
 
-exports.postIndex = {
+exports.postIndex = authKey => ({
+  auth: {
+    strategy: 'token',
+    mode: 'try'
+  },
+
   response: {
     schema: ScoreResource.options({ stripUnknown: { objects: true, arrays: false } }),
     modify: true
   },
+
+  validate: {
+    payload: {
+      // TODO: accept user name through
+      // userName: Joi.reach(ScoreResource, 'userName').required(),
+      score: Joi.reach(ScoreResource, 'score').required()
+    }
+  },
+
   async handler(request, reply) {
-    // TODO: use JWT to get a User ID and get the name
-    // ...then remove this:
-    const userId = 'be88d1c1-0362-4821-8b5c-9195c49e7bf4';
+    var userId;
+
+    if (request.auth.isAuthenticated) {
+      userId = request.auth.credentials.uid;
+    } else {
+      userId = uuid();
+    }
+
+    // TODO: accept this from request payload
     const userName = 'Nathan';
 
     // Default counter caches
@@ -75,8 +100,21 @@ exports.postIndex = {
         createdAt: new Date()
       },
       '*'
-    )).map(r => Object.assign({}, r))[0];
+    )).map(r =>
+      Object.assign(
+        {
+          userToken: JsonWebToken.sign(
+            {
+              uid: userId
+            },
+            authKey,
+            { algorithm: 'HS256' }
+          )
+        },
+        r
+      )
+    )[0];
 
     reply(score);
   }
-};
+});

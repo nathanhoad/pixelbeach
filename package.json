@@ -12,6 +12,10 @@
     "db": "knex",
     "test": "jest --runInBand"
   },
+  "engines": {
+    "node": "8.9.1",
+    "npm": "5.5.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"

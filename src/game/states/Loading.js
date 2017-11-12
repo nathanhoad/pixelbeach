@@ -29,9 +29,9 @@ class LoadingState {
     this.game.load.image('ducky', require('../assets/ducky.png'));
     this.game.load.image('beachball-1', require('../assets/beachball.png'));
     this.game.load.image('beachball-2', require('../assets/beachball2.png'));
-    this.game.load.image('cat-1', require('../assets/cat_surfer1_20x8.png'));
-    this.game.load.image('cat-2', require('../assets/cat_surfer2_20x8.png'));
-    this.game.load.image('cat-3', require('../assets/cat_surfer3_20x8.png'));
+    this.game.load.spritesheet('cat-1', require('../assets/cat_surfer1_20x8.png'), 20, 8, 4);
+    this.game.load.spritesheet('cat-2', require('../assets/cat_surfer2_20x8.png'), 20, 8, 4);
+    this.game.load.spritesheet('cat-3', require('../assets/cat_surfer3_20x8.png'), 20, 8, 4);
 
     // obstacles
     this.game.load.image('obstacle', require('../assets/mine.png'));

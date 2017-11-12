@@ -24,12 +24,12 @@ const ITEMS = {
     { sprite: 'cat-1', animates: true, scale: 0.95, points: 25 },
     { sprite: 'cat-2', animates: true, scale: 0.95, points: 25 },
     { sprite: 'cat-3', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'hoff', animates: true, scale: 0.75, points: 10 },
-    { sprite: 'pink-poodle', animates: true, scale: 0.95, points: 10 },
-    { sprite: 'swan-floaty1', animates: true, scale: 0.65, points: 10 },
+    { sprite: 'hoff', animates: true, scale: 0.75, points: 50 },
+    { sprite: 'pink-poodle', animates: true, scale: 0.95, points: 25 },
+    { sprite: 'swan-floaty1', animates: true, scale: 0.65, points: 25 },
     { sprite: 'swan-floaty2', animates: true, scale: 0.65, points: 10 },
-    { sprite: 'unicorn-floaty3', animates: true, scale: 0.65, points: 10 },
-    { sprite: 'seagull', animates: true, scale: 0.75, points: 1 }
+    { sprite: 'unicorn-floaty3', animates: true, scale: 0.65, points: 100 },
+    { sprite: 'seagull', animates: true, scale: 0.75, points: 10 }
   ],
   obstacles: [
     { sprite: 'obstacle', animates: true, scale: 1 },

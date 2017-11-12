@@ -8,7 +8,7 @@ const LOWER_BOUND = 400;
 let isEmitting = false;
 let timer, timerEvent;
 
-const skins = {
+const SKINS = {
   wetsuits: ['wetsuit.green', 'wetsuit.yellow', 'wetsuit.purple', 'wetsuit.red'],
   skins: ['skin.1', 'skin.2', 'skin.3', 'skin.4'],
   hairs: ['hair.blonde', 'hair.brunette', 'hair.ginger', 'hair.pink'],
@@ -62,10 +62,10 @@ class GameState {
     const playerChance = new Chance();
 
     const skinElements = [
-      playerChance.pickone(skins.wetsuits),
-      playerChance.pickone(skins.skins),
-      playerChance.pickone(skins.hairs),
-      playerChance.pickone(skins.boards)
+      playerChance.pickone(SKINS.wetsuits),
+      playerChance.pickone(SKINS.skins),
+      playerChance.pickone(SKINS.hairs),
+      playerChance.pickone(SKINS.boards)
     ];
 
     if (playerChance.bool({ likelihood: 25 })) {

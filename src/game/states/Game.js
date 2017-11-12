@@ -18,12 +18,12 @@ const SKINS = {
 
 const ITEMS = {
   collectables: [
-    { sprite: 'ducky', animates: true, scale: 1 },
-    { sprite: 'beachball-1', animates: true, scale: 1 },
-    { sprite: 'beachball-2', animates: true, scale: 1 },
-    { sprite: 'cat-1', animates: true, scale: .95 },
-    { sprite: 'cat-2', animates: true, scale: .95 },
-    { sprite: 'cat-3', animates: true, scale: .95 }
+    { sprite: 'ducky', animates: true, scale: 1, points: 10 },
+    { sprite: 'beachball-1', animates: true, scale: 1, points: 10 },
+    { sprite: 'beachball-2', animates: true, scale: 1, points: 10 },
+    { sprite: 'cat-1', animates: true, scale: .95, points: 25 },
+    { sprite: 'cat-2', animates: true, scale: .95, points: 25 },
+    { sprite: 'cat-3', animates: true, scale: .95, points: 25 }
   ],
   obstacles: [{ sprite: 'obstacle', animates: true, scale: 1 }, { sprite: 'demogorgon', animates: true, scale: 1 }]
 };
@@ -31,6 +31,11 @@ const ITEMS = {
 // For fast checking to which a sprite belongs using array.includes (collision)
 const COLLECTABLE_SPRITES = ITEMS.collectables.map(col => col.sprite);
 const OBSTACLE_SPRITES = ITEMS.obstacles.map(col => col.sprite);
+const MAX_POINTS = Math.max(...ITEMS.collectables.map(col => col.points));
+const COLLECTABLE_WEIGHTS = ITEMS.collectables.map(col => {
+  const penalty = Math.ceil((col.points + 1) / 3);
+  return MAX_POINTS - penalty;
+});
 
 class GameState {
   create() {
@@ -319,7 +324,9 @@ class GameState {
       const isObstacle = this.itemsChance.bool({
         likelihood: 5 + Math.min(55, this.lastCollisionDistance / 4000 * 55)
       });
-      const itemConfig = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables);
+      const itemConfig = isObstacle
+        ? this.itemsChance.pickone(ITEMS.obstacles)
+        : this.itemsChance.weighted(ITEMS.collectables, COLLECTABLE_WEIGHTS);
 
       const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
 
@@ -371,6 +378,7 @@ class GameState {
       (p, s) => {
         if (COLLECTABLE_SPRITES.includes(s.key)) {
           if (!s.isCollected) {
+            let itemConfig = ITEMS.collectables.find(item => item.sprite === s.key);
             this.pickUp.play();
             s.isCollected = true;
             s.body.velocity.x = 0;
@@ -379,6 +387,7 @@ class GameState {
 
             // TODO: different points for different things
             // and multipliers
+            Data.addPoints(itemConfig.points);
             Data.collectCollectable();
           }
           return false;
@@ -407,7 +416,7 @@ class GameState {
   }
 
   handleScore() {
-    this.collectableText.text = Data.get('collectables');
+    this.collectableText.text = Data.get('points');
   }
 
   gameOver() {

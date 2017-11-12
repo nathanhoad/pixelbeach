@@ -31,7 +31,12 @@ const ITEMS = {
     { sprite: 'unicorn-floaty3', animates: true, scale: 0.65, points: 100 },
     { sprite: 'seagull', animates: true, scale: 0.75, points: 10 }
   ],
-  obstacles: [{ sprite: 'obstacle', animates: true, scale: 1 }, { sprite: 'demogorgon', animates: true, scale: 1 }]
+  obstacles: [
+    { sprite: 'obstacle', animates: true, scale: 1 },
+    { sprite: 'demogorgon', animates: true, scale: 1 },
+    { sprite: 'shark', animates: true, scale: 1 },
+    { sprite: 'loose-seal', animates: true, scale: 0.75 }
+  ]
 };
 
 // For fast checking to which a sprite belongs using array.includes (collision)

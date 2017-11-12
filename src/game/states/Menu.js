@@ -48,6 +48,7 @@ class MenuState {
     this.leaderboardText.inputEnabled = true;
     this.leaderboardText.events.onInputDown.add(() => {
       this.game.camera.onFadeComplete.add(() => {
+        this.game.camera.onFadeComplete.removeAll();
         this.game.state.start('highscores');
       });
       this.game.camera.fade('#000', 500);

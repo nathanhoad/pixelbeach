@@ -1,6 +1,7 @@
 const Path = require('path');
 const Config = require('./config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: Config.env.development ? './src/game/index.js' : './src/game/preview.js',
@@ -57,10 +58,10 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: '../index.html',
-      template: Path.join(
-        Config.paths.game.assets,
-        Config.env.development ? 'index.html.ejs' : 'index.preview.html.ejs'
-      )
+      template: Path.join(Config.paths.game.assets, 'index.html.ejs')
+    }),
+    new UglifyJSPlugin({
+      parallel: true
     })
   ]
 };

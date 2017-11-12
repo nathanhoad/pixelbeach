@@ -38,6 +38,7 @@ class HighScores {
     this.goBackText.inputEnabled = true;
     this.goBackText.events.onInputDown.add(() => {
       this.game.camera.onFadeComplete.add(() => {
+        this.game.camera.onFadeComplete.removeAll();
         this.game.state.start('game');
       });
       this.game.camera.fade('#000', 500);

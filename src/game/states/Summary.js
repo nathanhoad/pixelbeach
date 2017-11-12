@@ -61,6 +61,7 @@ class SummaryState {
     this.againButton.inputEnabled = true;
     this.againButton.events.onInputDown.add(() => {
       this.game.camera.onFadeComplete.add(() => {
+        this.game.camera.onFadeComplete.removeAll();
         this.game.state.start('game');
       });
       this.game.camera.fade('#000', 500);
@@ -78,13 +79,14 @@ class SummaryState {
     this.scoresButton.inputEnabled = true;
     this.scoresButton.events.onInputDown.add(() => {
       this.game.camera.onFadeComplete.add(() => {
+        this.game.camera.onFadeComplete.removeAll();
         this.game.state.start('highscores');
       });
       this.game.camera.fade('#000', 500);
     }, this);
 
     // Fade in
-    this.game.camera.flash('#000', 300, true);
+    this.game.camera.flash(Data.get('died') ? 0xff0000 : 0x000000, 300, true);
   }
 }
 

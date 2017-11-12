@@ -201,6 +201,8 @@ class GameState {
 
     // this.game.add.sprite(0, LOWER_BOUND, 'wave-bottom');
     this.game.camera.flash('#000', 500, true);
+
+    this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
   }
 
   update() {
@@ -219,7 +221,7 @@ class GameState {
         break;
 
       case 'gameover':
-        this.handleGameOver();
+        // this.handleGameOver();
         break;
     }
   }
@@ -255,7 +257,7 @@ class GameState {
     } else {
       this.player.body.gravity.y = 0;
 
-      if (this.game.input.activePointer.isDown) {
+      if (this.game.input.activePointer.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
         // The player has actually done something so we can start
         // generating collectables and obstacles
         this.hasStarted = true;
@@ -437,20 +439,20 @@ class GameState {
 
     Data.died();
 
+    this.game.camera.onFlashComplete.add(() => {
+      this.game.camera.onFlashComplete.removeAll();
+      this.game.camera.onFadeComplete.add(() => {
+        this.game.camera.onFadeComplete.removeAll();
+        this.game.state.start('summary');
+      });
+      this.game.camera.fade(0xff0000, 200);
+    });
+    this.game.camera.flash(0xff0000, 200);
+
     this.player.body.velocity.y = 0;
-    this.gameOverCountdown = 60;
+    this.player.body.velocity.x = -200;
     this.mode = 'gameover';
-
-    // TODO: set animation
     this.surfer.anim = 'idle';
-  }
-
-  handleGameOver() {
-    if (this.gameOverCountdown) {
-      this.gameOverCountdown--;
-    } else {
-      this.game.state.start('summary');
-    }
   }
 
   endTimer() {

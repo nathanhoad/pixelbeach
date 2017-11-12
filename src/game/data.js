@@ -3,11 +3,11 @@ require('isomorphic-fetch');
 
 const Immutable = require('immutable');
 
+const STORAGE_USER_NAME = 'user-name';
 const STORAGE_AUTH_TOKEN_KEY = 'user-token';
 
 class Data {
   constructor() {
-    // TODO: Load from localStorage
     this.state = Immutable.Map({
       collectables: 0,
       points: 0,
@@ -20,11 +20,16 @@ class Data {
     return this.state.get(key, defaultValue);
   }
 
-  resetScore() {
+  reset() {
     this.state = this.state
+      .set('died', false)
       .set('collectables', 0)
       .set('points', 0)
       .set('pointMultiplier', 1);
+  }
+
+  died() {
+    this.state = this.state.set('died', true);
   }
 
   addMultiplier() {
@@ -51,13 +56,15 @@ class Data {
   }
 
   submitScore() {
-    // TODO ask for name if there is none saved
-    // ...
+    let userName = global.localStorage && localStorage.getItem(STORAGE_USER_NAME);
+    if (!userName) {
+      userName = prompt('What is your name?', 'Madmax');
+      global.localStorage && localStorage.setItem(STORAGE_USER_NAME, userName);
+    }
 
-    // TODO: work out how things get scored
     const payload = {
-      userName: 'Nathan',
-      score: this.get('points') + this.get('collectables') * this.get('collectables')
+      userName,
+      score: this.get('points')
     };
 
     const headers = {

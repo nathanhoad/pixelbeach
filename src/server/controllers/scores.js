@@ -53,8 +53,7 @@ exports.postIndex = authKey => ({
 
   validate: {
     payload: {
-      // TODO: accept user name through
-      // userName: Joi.reach(ScoreResource, 'userName').required(),
+      userName: Joi.reach(ScoreResource, 'userName').required(),
       score: Joi.reach(ScoreResource, 'score').required()
     }
   },
@@ -68,8 +67,7 @@ exports.postIndex = authKey => ({
       userId = uuid();
     }
 
-    // TODO: accept this from request payload
-    const userName = 'Nathan';
+    const userName = request.payload.userName;
 
     // Default counter caches
     let highScore = request.payload.score;

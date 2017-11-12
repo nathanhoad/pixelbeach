@@ -21,9 +21,9 @@ const ITEMS = {
     { sprite: 'ducky', animates: true, scale: 1, points: 10 },
     { sprite: 'beachball-1', animates: true, scale: 1, points: 10 },
     { sprite: 'beachball-2', animates: true, scale: 1, points: 10 },
-    { sprite: 'cat-1', animates: true, scale: .95, points: 25 },
-    { sprite: 'cat-2', animates: true, scale: .95, points: 25 },
-    { sprite: 'cat-3', animates: true, scale: .95, points: 25 }
+    { sprite: 'cat-1', animates: true, scale: 0.95, points: 25 },
+    { sprite: 'cat-2', animates: true, scale: 0.95, points: 25 },
+    { sprite: 'cat-3', animates: true, scale: 0.95, points: 25 }
   ],
   obstacles: [{ sprite: 'obstacle', animates: true, scale: 1 }, { sprite: 'demogorgon', animates: true, scale: 1 }]
 };
@@ -39,6 +39,8 @@ const COLLECTABLE_WEIGHTS = ITEMS.collectables.map(col => {
 
 class GameState {
   create() {
+    Data.reset();
+
     this.game.add.sprite(0, 0, 'wave-background');
     const waveTop = this.game.add.sprite(150, 177, 'water-top');
     waveTop.animations.add('foam');
@@ -421,6 +423,8 @@ class GameState {
 
   gameOver() {
     if (this.mode === 'gameover') return;
+
+    Data.died();
 
     this.player.body.velocity.y = 0;
     this.gameOverCountdown = 60;

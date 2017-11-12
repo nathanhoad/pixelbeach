@@ -18,12 +18,12 @@ const SKINS = {
 
 const ITEMS = {
   collectables: [
-    { sprite: 'ducky', animates: false, score: 10 },
-    { sprite: 'beachball-1', animates: false, score: 10 },
-    { sprite: 'beachball-2', animates: false, score: 10 },
-    { sprite: 'cat-1', animates: true, score: 25 },
-    { sprite: 'cat-2', animates: true, score: 25 },
-    { sprite: 'cat-3', animates: true, score: 25 }
+    { sprite: 'ducky', animates: false, points: 10 },
+    { sprite: 'beachball-1', animates: false, points: 10 },
+    { sprite: 'beachball-2', animates: false, points: 10 },
+    { sprite: 'cat-1', animates: true, points: 25 },
+    { sprite: 'cat-2', animates: true, points: 25 },
+    { sprite: 'cat-3', animates: true, points: 25 }
   ],
   obstacles: [{ sprite: 'obstacle', animates: false }, { sprite: 'demogorgon', animates: false }]
 };

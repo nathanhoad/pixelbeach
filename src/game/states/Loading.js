@@ -26,6 +26,11 @@ class LoadingState {
     //wash assets
     this.game.load.image('wash', require('../assets/wash.png'));
     this.game.load.image('wash2', require('../assets/wash2.png'));
+
+    //audio
+    this.game.load.audio('pickup', require('../assets/pickup.wav'));
+    this.game.load.audio('fail', require('../assets/fail.wav'));
+    this.game.load.audio('trick2', require('../assets/trick2.wav'));
   }
 
   create() {

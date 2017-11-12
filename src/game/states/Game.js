@@ -36,6 +36,11 @@ class GameState {
     this.wash.maxParticleSpeed = new Phaser.Point(-100, 50);
     this.wash.minParticleSpeed = new Phaser.Point(-200, -50);
 
+    // Audio
+    this.pickUp = this.game.add.audio('pickup');
+    this.fail = this.game.add.audio('fail');
+    this.trick2 = this.game.add.audio('trick2');
+
     // this.player.addChild(this.wash);
     this.wash.start(false, 5000, 20);
 
@@ -86,6 +91,7 @@ class GameState {
     if (this.player.y < UPPER_BOUND) {
       // Player is in the sky
       if (this.player.body.gravity.y === 0) {
+        this.trick2.play();
         // 500 is the lowest gravity
         let gravity;
         if (this.playerMomentum > 160) {
@@ -224,6 +230,7 @@ class GameState {
           case 'item':
           case 'ducky':
             if (!s.isCollected) {
+              this.pickUp.play();
               s.isCollected = true;
               s.body.velocity.x = 0;
               this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
@@ -238,6 +245,7 @@ class GameState {
           case 'obstacle':
             // TODO: Custom death animation based on obstacle
             // ...
+            this.fail.play();
             this.gameOver();
             return false;
 

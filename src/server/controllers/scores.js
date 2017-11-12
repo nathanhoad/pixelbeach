@@ -99,7 +99,8 @@ exports.postIndex = authKey => ({
             {
               uid: userId
             },
-            authKey
+            authKey,
+            { algorithm: 'HS256' }
           )
         },
         r

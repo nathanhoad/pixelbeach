@@ -75,6 +75,7 @@ class LoadingState {
   }
 
   create() {
+    document.querySelector('#loading').style.setProperty('display', 'none');
     this.game.state.start('menu');
   }
 }

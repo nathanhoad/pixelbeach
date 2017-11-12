@@ -9,6 +9,10 @@
 	<meta property="og:image" content="https://i.imgur.com/e4Cb6o6.jpg">
 
 	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
 		html, body {
 			margin: 0;
 			padding: 0;
@@ -21,11 +25,36 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 		}
+
+		#loading {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #eee;
+			text-align: center;
+			padding-top: 20px;
+			font-family: Arial, sans-serif;
+			font-size: 20px;
+		}
+
+		#loading-image {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			max-width: 700px;
+		}
 	</style>
 </head>
 
 <body>
   <div id="game"></div>
+	<div id="loading">
+		<img id="loading-image" />
+		Loading...
+	</div>
 </body>
 
 </html>

@@ -14,5 +14,11 @@ game.state.add('highscores', require('./states/HighScores'));
 
 // Start the game already
 window.addEventListener('DOMContentLoaded', () => {
-  game.state.start('loading');
+  const loadingImage = document.querySelector('#loading-image');
+  loadingImage.onload = () => {
+    setTimeout(() => {
+      game.state.start('loading');
+    }, 1000);
+  };
+  loadingImage.src = require('./assets/box.jpg');
 });

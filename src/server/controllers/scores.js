@@ -36,7 +36,7 @@ exports.getIndex = {
 
   async handler(request, reply) {
     const scores = (await db('scores')
-      .orderBy('highScore', 'desc')
+      .orderBy('score', 'desc')
       .limit(10)).map(r => Object.assign({}, r));
 
     reply(scores);

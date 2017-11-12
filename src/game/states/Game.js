@@ -80,9 +80,9 @@ class GameState {
 
     this.wavefroth3 = this.game.add.emitter(170, UPPER_BOUND + 4, 100);
     this.wavefroth3.makeParticles(['wash', 'wash2', 'wave-froth-sml']);
-    this.wavefroth3.maxParticleSpeed = new Phaser.Point(-120, 10);
+    this.wavefroth3.maxParticleSpeed = new Phaser.Point(-110, 10);
     this.wavefroth3.minParticleSpeed = new Phaser.Point(-120, 40);
-    this.wavefroth3.start(false, 1500, 0.2);
+    this.wavefroth3.start(false, 900, 0.2);
     this.wavefroth3.gravity = 400;
 
     this.wash.minRotation = 0;
@@ -95,7 +95,7 @@ class GameState {
     this.wavefroth3.minRotation = 0;
     this.wavefroth3.maxRotation = 0;
 
-    this.game.add.sprite(0, LOWER_BOUND + 50, 'wave-bottom');
+    // this.game.add.sprite(0, LOWER_BOUND, 'wave-bottom');
     this.game.camera.flash('#000', 500, true);
   }
 

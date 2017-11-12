@@ -36,7 +36,6 @@ class LoadingState {
     this.game.load.spritesheet('cat-2', require('../assets/cat_surfer2_20x10.png'), 40, 20, 4);
     this.game.load.spritesheet('cat-3', require('../assets/cat_surfer3_20x10.png'), 40, 20, 4);
 
-
     // obstacles
     this.game.load.spritesheet('obstacle', require('../assets/mine_60x50.png'), 60, 50, 2);
     this.game.load.spritesheet('demogorgon', require('../assets/demogorgon_30_20.png'), 60, 40, 2);
@@ -65,7 +64,7 @@ class LoadingState {
   }
 
   create() {
-    this.game.state.start('summary');
+    this.game.state.start('menu');
   }
 }
 

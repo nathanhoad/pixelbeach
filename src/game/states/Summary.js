@@ -15,18 +15,17 @@ class SummaryState {
     const titles = ['COWABUNGA!', 'GNARLY!', 'RADICAL!', 'TOTALLY TUBULAR!'];
     let title = titles[Math.floor(Math.random() * titles.length)];
 
-    // TODO: load from Data
-    const alive = true;
-    if (alive) {
+    if (!Data.get('died')) {
       const surfer = this.game.add.sprite(this.game.world.width / 2, -100, 'summary-surfer');
       const surferTween = this.game.add.tween(surfer).to({ y: 180 }, 1500, Phaser.Easing.Circular.Out, true, 500, 0);
       surferTween.onComplete.add(() => {
-        // TODO: ask for name if none
-        //Data.submitScore();
+        Data.submitScore();
       });
     } else {
       title = `YOU DIDN'T MAKE IT...`;
-      Data.submitScore();
+      setTimeout(() => {
+        Data.submitScore();
+      }, 2000);
     }
 
     this.titleText = this.game.add.text(0, 0, title, {
@@ -40,7 +39,7 @@ class SummaryState {
     this.game.add.tween(this.titleText).to({ alpha: 1 }, 500, 'Linear', true, 1700, 0);
 
     // You scored
-    this.scoreText = this.game.add.text(0, 0, 'You scored ' + Data.get('currentScore', 0), {
+    this.scoreText = this.game.add.text(0, 0, 'You scored ' + Data.get('points', 0), {
       font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'center',

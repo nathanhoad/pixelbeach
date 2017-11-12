@@ -11,7 +11,7 @@ class SummaryState {
     });
 
     // TODO: check for username
-    // Data.submitScore();
+    Data.submitScore();
   }
 }
 

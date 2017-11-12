@@ -5,6 +5,7 @@ const MAX_VERTICAL_SPEED = 400;
 const UPPER_BOUND = 200;
 const LOWER_BOUND = 400;
 let isEmitting = false;
+let timer, timerEvent;
 
 class GameState {
   create() {
@@ -71,6 +72,20 @@ class GameState {
       boundsAlignV: 'middle'
     });
 
+    // Countdown
+    this.countDown = this.game.add.text(40, 30, '0', {
+      font: 'bold 20px Courier New',
+      fill: 'white',
+      boundsAlignH: 'left',
+      boundsAlignV: 'middle'
+    });
+
+    // timer
+    timer = this.game.time.create();
+    timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+
+    timer.start();
+
     // Mode
     this.mode = 'playing';
 
@@ -116,6 +131,12 @@ class GameState {
         this.handleItems();
         this.handleCollisions();
         this.handleScore();
+        if (timer.running) {
+          this.countDown.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
+        } else {
+          this.gameOver();
+        }
+
         break;
 
       case 'gameover':
@@ -324,11 +345,14 @@ class GameState {
     }
   }
 
-  render() {
-    this.game.debug.text(this.playerMomentum, 100, 20, 'red');
-    this.game.debug.text('in the sky? ' + (this.player.y < UPPER_BOUND), 100, 40, 'red');
-    this.game.debug.text('gravity' + this.player.body.gravity.y, 100, 60, 'green');
+  endTimer() {
+    timer.stop();
+  };
+
+  formatTime(s) {
+    const minutes = "0" + Math.floor(s / 60);
+    const seconds = "0" + (s - minutes * 60);
+    return minutes.substr(-2) + ":" + seconds.substr(-2);
   }
 }
-
 module.exports = GameState;

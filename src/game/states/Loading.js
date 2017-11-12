@@ -18,9 +18,15 @@ class LoadingState {
     // Load assets
     this.game.load.image('player', require('../assets/player.png'));
     this.game.load.image('item', require('../assets/temp-surfer.png'));
-    this.game.load.spine('surfer', require('../spines/surfer'));
+    this.game.load.spine(
+      'surfer', //The key used for Phaser's cache
+      require('../spines/surfer') //The location of the spine's json file
+    );
+    this.game.load.image('obstacle', require('../assets/big-box.png'));
 
-    this.game.load.image('obstacle', require('../assets/temp-surfer.png'));
+    //wash assets
+    this.game.load.image('wash', require('../assets/wash.png'));
+    this.game.load.image('wash2', require('../assets/wash2.png'));
   }
 
   create() {

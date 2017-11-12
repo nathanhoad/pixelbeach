@@ -43,6 +43,8 @@ class HighScores {
     Data.loadHighScores().then(scores => {
       this.scores = scores;
     });
+
+    this.game.camera.flash('#000', 300, true);
   }
 
   update() {

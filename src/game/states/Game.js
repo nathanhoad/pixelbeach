@@ -18,14 +18,14 @@ const SKINS = {
 
 const ITEMS = {
   collectables: [
-    { sprite: 'ducky', animates: false },
-    { sprite: 'beachball-1', animates: false },
-    { sprite: 'beachball-2', animates: false },
-    { sprite: 'cat-1', animates: true },
-    { sprite: 'cat-2', animates: true },
-    { sprite: 'cat-3', animates: true }
+    { sprite: 'ducky', animates: true, scale: 1 },
+    { sprite: 'beachball-1', animates: true, scale: 1 },
+    { sprite: 'beachball-2', animates: true, scale: 1 },
+    { sprite: 'cat-1', animates: true, scale: .95 },
+    { sprite: 'cat-2', animates: true, scale: .95 },
+    { sprite: 'cat-3', animates: true, scale: .95 }
   ],
-  obstacles: [{ sprite: 'obstacle', animates: false }, { sprite: 'demogorgon', animates: false }]
+  obstacles: [{ sprite: 'obstacle', animates: true, scale: 1 }, { sprite: 'demogorgon', animates: true, scale: 1 }]
 };
 
 // For fast checking to which a sprite belongs using array.includes (collision)

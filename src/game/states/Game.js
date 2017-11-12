@@ -136,19 +136,20 @@ class GameState {
 
     this.collectableIcon = this.sprites.create(10, 10, 'ducky');
     this.collectableText = this.game.add.text(70, 20, '0', {
-      font: 'bold 20px Courier New',
+      font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'left',
       boundsAlignV: 'middle'
     });
 
     // Countdown
-    this.countDown = this.game.add.text(40, 30, '0', {
-      font: 'bold 20px Courier New',
+    this.countDown = this.game.add.text(0, 0, '0', {
+      font: 'bold 20px Arial',
       fill: 'white',
-      boundsAlignH: 'left',
+      boundsAlignH: 'center',
       boundsAlignV: 'middle'
     });
+    this.countDown.setTextBounds(0, 20, this.game.world.width, 20);
 
     // timer
     timer = this.game.time.create();

@@ -8,6 +8,9 @@ let isEmitting = false;
 
 class GameState {
   create() {
+    this.game.stage.backgroundColor = '#64D6FE';
+    this.game.add.sprite(0, 100, 'ocean');
+    this.game.add.sprite(0, UPPER_BOUND, 'backwave');
     // Group for any sprites
     this.sprites = this.game.add.group();
     this.sprites.enableBody = true;
@@ -61,6 +64,38 @@ class GameState {
     // Mode
     this.mode = 'playing';
 
+    this.game.add.sprite(0, UPPER_BOUND, 'wave');
+    //wave froth
+    this.wavefroth1 = this.game.add.emitter(60, 400, 200);
+    this.wavefroth1.makeParticles(['wave-froth-lrg', 'wave-froth', 'wave-froth-lrg', 'wave-froth-hge']);
+    this.wavefroth1.maxParticleSpeed = new Phaser.Point(-100, 20);
+    this.wavefroth1.minParticleSpeed = new Phaser.Point(-200, -150);
+    this.wavefroth1.start(false, 1000, 1);
+
+    this.wavefroth2 = this.game.add.emitter(170, UPPER_BOUND + 4, 200);
+    this.wavefroth2.makeParticles(['wash', 'wash2', 'wave-froth', 'wave-froth-sml']);
+    this.wavefroth2.maxParticleSpeed = new Phaser.Point(-100, 50);
+    this.wavefroth2.minParticleSpeed = new Phaser.Point(-200, -50);
+    this.wavefroth2.start(false, 1500, 1);
+
+    this.wavefroth3 = this.game.add.emitter(170, UPPER_BOUND + 4, 100);
+    this.wavefroth3.makeParticles(['wash', 'wash2', 'wave-froth-sml']);
+    this.wavefroth3.maxParticleSpeed = new Phaser.Point(-120, 10);
+    this.wavefroth3.minParticleSpeed = new Phaser.Point(-120, 40);
+    this.wavefroth3.start(false, 1500, 0.2);
+    this.wavefroth3.gravity = 400;
+
+    this.wash.minRotation = 0;
+    this.wash.maxRotation = 0;
+
+    this.wavefroth1.minRotation = 0;
+    this.wavefroth1.maxRotation = 0;
+    this.wavefroth2.minRotation = 0;
+    this.wavefroth2.maxRotation = 0;
+    this.wavefroth3.minRotation = 0;
+    this.wavefroth3.maxRotation = 0;
+
+    this.game.add.sprite(0, LOWER_BOUND + 50, 'wave-bottom');
     this.game.camera.flash('#000', 500, true);
   }
 

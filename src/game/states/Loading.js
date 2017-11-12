@@ -23,7 +23,11 @@ class LoadingState {
       'surfer', //The key used for Phaser's cache
       require('../spines/surfer') //The location of the spine's json file
     );
-    this.game.load.image('obstacle', require('../assets/temp-surfer.png'));
+    this.game.load.image('obstacle', require('../assets/wash.png'));
+
+    //wash assets
+    this.game.load.image('wash', require('../assets/white-box.png'));
+    this.game.load.image('wash2', require('../assets/wash2.png'));
   }
 
   create() {

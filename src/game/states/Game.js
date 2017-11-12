@@ -2,6 +2,7 @@ const ACCELERATION = 50;
 const MAX_VERTICAL_SPEED = 400;
 const UPPER_BOUND = 200;
 const LOWER_BOUND = 350;
+let isEmitting = false;
 
 class GameState {
   create() {
@@ -29,6 +30,16 @@ class GameState {
     // Collectables
     this.nextItemCountdown = 100;
 
+    // Particles
+    this.wash = this.game.add.emitter(100, 100, 200);
+    // this.wash.gravity = 200;
+    this.wash.makeParticles(['wash', 'wash2']);
+    this.wash.maxParticleSpeed = new Phaser.Point(-100, 50);
+    this.wash.minParticleSpeed = new Phaser.Point(-200, -50);
+
+    // this.player.addChild(this.wash);
+    this.wash.start(false, 5000, 20);
+
     // Mode
     this.mode = 'playing';
   }
@@ -39,6 +50,7 @@ class GameState {
         this.handlePlayer();
         this.handleItems();
         this.handleCollisions();
+
         break;
 
       case 'gameover':
@@ -50,6 +62,11 @@ class GameState {
   // Internal helpers
 
   handlePlayer() {
+    let isTricking = false;
+
+    this.wash.x = this.player.x - 10;
+    this.wash.y = this.player.y + 10;
+
     // Movement
     if (this.game.input.activePointer.isDown) {
       // The player has actually done something so we can start
@@ -57,7 +74,6 @@ class GameState {
       this.hasStarted = true;
 
       if (this.player.y < UPPER_BOUND) {
-        console.log('trick time!');
         this.player.body.velocity.y += ACCELERATION / 4;
         // THIS IS THE TRICK AREA
       } else {
@@ -82,6 +98,12 @@ class GameState {
       }
     }
 
+    if (this.player.y < UPPER_BOUND) {
+      isTricking = true;
+    } else {
+      isTricking = false;
+    }
+
     // Animations
     if (this.player.body.velocity.y < 0) {
       if (this.surfer.anim !== 'idle-up') {
@@ -98,6 +120,16 @@ class GameState {
         this.surfer.setAnimationByName(0, 'idle', true);
         this.surfer.anim = 'idle';
       }
+    }
+
+    if (isTricking) {
+      this.wash.on = false;
+      isEmitting = false;
+    }
+
+    if (!isTricking && !isEmitting) {
+      this.wash.start(false, 5000, 20);
+      isEmitting = true;
     }
   }
 

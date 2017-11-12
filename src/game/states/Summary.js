@@ -1,3 +1,5 @@
+const Data = require('../data');
+
 class SummaryState {
   create() {
     this.game.stage.backgroundColor = '#06f';
@@ -7,6 +9,9 @@ class SummaryState {
       boundsAlignH: 'center',
       boundsAlignV: 'middle'
     });
+
+    // TODO: check for username
+    // Data.submitScore();
   }
 }
 

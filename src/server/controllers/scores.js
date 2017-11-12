@@ -41,9 +41,10 @@ exports.postIndex = {
     modify: true
   },
   async handler(request, reply) {
-    // TODO: use JWT to get a User ID
+    // TODO: use JWT to get a User ID and get the name
     // ...then remove this:
     const userId = 'be88d1c1-0362-4821-8b5c-9195c49e7bf4';
+    const userName = 'Nathan';
 
     // Default counter caches
     let highScore = request.payload.score;
@@ -63,20 +64,18 @@ exports.postIndex = {
       deaths = previousScore.deaths + (request.payload.isDead ? 1 : 0);
     }
 
-    const score = Object.assign(
-      {},
-      await db('scores').insert(
-        {
-          id: uuid(),
-          userId,
-          score: request.payload.score,
-          highScore,
-          deaths,
-          createdAt: new Date()
-        },
-        '*'
-      )
-    );
+    const score = (await db('scores').insert(
+      {
+        id: uuid(),
+        userId,
+        userName,
+        score: request.payload.score,
+        highScore,
+        deaths,
+        createdAt: new Date()
+      },
+      '*'
+    )).map(r => Object.assign({}, r))[0];
 
     reply(score);
   }

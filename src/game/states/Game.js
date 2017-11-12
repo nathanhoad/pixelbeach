@@ -127,7 +127,7 @@ class GameState {
     this.soundtrack = new Phaser.Sound(this.game, 'soundtrack', 1, true);
 
     // Play the soundtrack
-    this.soundtrack.play();
+    // this.soundtrack.play();
 
     // Turn the fucking volume down
     this.pickUp.volume = 0.05;
@@ -146,20 +146,20 @@ class GameState {
     this.itemsChance = new Chance(); // put in a level seed here!
 
     this.collectableIcon = this.sprites.create(10, 10, 'ducky-icon');
-    this.collectableText = this.game.add.text(40, 10, '0', {
-      font: 'bold 20px Courier New',
+      font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'left',
       boundsAlignV: 'middle'
     });
 
     // Countdown
-    this.countDown = this.game.add.text(40, 30, '0', {
-      font: 'bold 20px Courier New',
+    this.countDown = this.game.add.text(0, 0, '0', {
+      font: 'bold 20px Arial',
       fill: 'white',
-      boundsAlignH: 'left',
+      boundsAlignH: 'center',
       boundsAlignV: 'middle'
     });
+    this.countDown.setTextBounds(0, 20, this.game.world.width, 20);
 
     // timer
     timer = this.game.time.create();
@@ -396,6 +396,10 @@ class GameState {
             s.isCollected = true;
             s.body.velocity.x = 0;
             this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
+            setTimeout(() => {
+              this.collectableIcon.kill();
+              this.collectableIcon = this.sprites.getFirstDead(true, 10, 10, s.key);
+            }, 200);
             // TODO: put a score thing in the corner where this flies to and add stuff to it
 
             // TODO: different points for different things

@@ -64,7 +64,8 @@ class Data {
 
     const payload = {
       userName,
-      score: this.get('points')
+      score: this.get('points'),
+      deaths: this.get('died') ? 1 : 0
     };
 
     const headers = {

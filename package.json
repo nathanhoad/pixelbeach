@@ -16,7 +16,12 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"
   },
-  "contributors": ["Nathan Hoad", "Lilly Piri", "Ben Hoad", "Jaap van Hardeveld"],
+  "contributors": [
+    "Nathan Hoad",
+    "Lilly Piri",
+    "Ben Hoad",
+    "Jaap van Hardeveld"
+  ],
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/Hackbit/nko2017-pixelbeach/issues"
@@ -28,7 +33,11 @@
         "env",
         {
           "targets": {
-            "browsers": ["> 1%", "last 2 versions", "Firefox ESR"]
+            "browsers": [
+              "> 1%",
+              "last 2 versions",
+              "Firefox ESR"
+            ]
           }
         }
       ]

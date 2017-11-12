@@ -16,6 +16,11 @@ const SKINS = {
   boards: ['board.red', 'board.green', 'board.yellow', 'board.purple']
 };
 
+const ITEMS = {
+  collectables: ['ducky', 'beachball-1', 'beachball-2', 'cat-1', 'cat-2', 'cat-3'],
+  obstacles: ['obstacle', 'demogorgon']
+};
+
 class GameState {
   create() {
     this.game.add.sprite(0, 0, 'wave-background');
@@ -69,7 +74,7 @@ class GameState {
     ];
 
     if (playerChance.bool({ likelihood: 25 })) {
-      skinElements.unshift(playerChance.pickone(skins.helmets));
+      skinElements.unshift(playerChance.pickone(SKINS.helmets));
     }
     const skin = this.surfer.createCombinedSkin('player', ...skinElements);
 
@@ -106,8 +111,9 @@ class GameState {
     // Keep track of how much air you should get
     this.playerMomentum = 1;
 
-    // Collectables
+    // Items
     this.nextItemCountdown = 100;
+    this.itemsChance = new Chance(); // put in a level seed here!
 
     this.collectableIcon = this.sprites.create(10, 10, 'ducky');
     this.collectableText = this.game.add.text(40, 10, '0', {
@@ -298,8 +304,8 @@ class GameState {
     // Create a new item
     if (this.nextItemCountdown === 0) {
       // TODO: have some smarts over whether to create a collectable or an obstacle
-      const isObstacle = Math.random() > 0.5;
-      const key = isObstacle ? 'obstacle' : 'ducky'; // TODO: other items?
+      const isObstacle = this.itemsChance.bool({ likelihood: 40 });
+      const key = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables); // TODO: other items?
 
       const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
 

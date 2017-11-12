@@ -20,7 +20,6 @@ class MenuState {
     // Create the title
     const title = this.game.add.sprite(180, -200, 'title');
     const titleTween = this.game.add.tween(title).to({ y: 30 }, 1000, Phaser.Easing.Circular.Out, true, 300, 0);
-    // titleTween.yoyo(true, 0);
 
     // Create Menu
     this.startText = this.game.add.text(0, 0, 'START', {
@@ -67,7 +66,7 @@ class MenuState {
     cloud.events.onOutOfBounds.removeAll();
     cloud.events.onOutOfBounds.add(target => {
       if (target.x < 0 - target.width) {
-        target.kill();
+        target.x = this.game.world.width + target.width;
       }
     });
 

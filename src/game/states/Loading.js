@@ -29,10 +29,11 @@ class LoadingState {
     this.game.load.image('obstacle', require('../assets/mine.png'));
 
     //backgrounds
-    this.game.load.image('ocean', require('../assets/ocean.png'));
-    this.game.load.image('backwave', require('../assets/backwave-low.png'));
-    this.game.load.image('wave', require('../assets/wave.png'));
+    this.game.load.image('wave-background', require('../assets/wave-background.png'));
+    this.game.load.spritesheet('water-top', require('../assets/water-top.png'), 260 * 2, 30 * 2);
+    this.game.load.spritesheet('wave', require('../assets/wave-over.png'), 280, 360);
     this.game.load.image('wave-bottom', require('../assets/wave-bottom.png'));
+    this.game.load.spritesheet('speed-line', require('../assets/speed-line.png'), 320 * 2, 2 * 2);
 
     //wash assets
     this.game.load.image('wash', require('../assets/wash.png'));

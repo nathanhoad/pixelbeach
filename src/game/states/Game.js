@@ -21,11 +21,22 @@ const ITEMS = {
     { sprite: 'ducky', animates: true, scale: 1, points: 10 },
     { sprite: 'beachball-1', animates: true, scale: 1, points: 10 },
     { sprite: 'beachball-2', animates: true, scale: 1, points: 10 },
-    { sprite: 'cat-1', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'cat-2', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'cat-3', animates: true, scale: 0.95, points: 25 }
+    { sprite: 'cat-1', animates: true, scale: .95, points: 25 },
+    { sprite: 'cat-2', animates: true, scale: .95, points: 25 },
+    { sprite: 'cat-3', animates: true, scale: .95, points: 25 },
+    { sprite: 'hoff', animates: true, scale: 0.75, points: 10 },
+    { sprite: 'pink-poodle', animates: true, scale: 0.95, points: 10 },
+    { sprite: 'swan-floaty1', animates: true, scale: 0.65, points: 10 },
+    { sprite: 'swan-floaty2', animates: true, scale: 0.65, points: 10 },
+    { sprite: 'unicorn-floaty3', animates: true, scale: 0.65, points: 10 },
+    { sprite: 'seagull', animates: true, scale: 0.75, points: 1 },
   ],
-  obstacles: [{ sprite: 'obstacle', animates: true, scale: 1 }, { sprite: 'demogorgon', animates: true, scale: 1 }]
+  obstacles: [
+    { sprite: 'obstacle', animates: true, scale: 1 },
+    { sprite: 'demogorgon', animates: true, scale: 1 },
+    { sprite: 'shark', animates: true, scale: 1 },
+    { sprite: 'loose-seal', animates: true, scale: 0.75 }
+  ]
 };
 
 // For fast checking to which a sprite belongs using array.includes (collision)
@@ -134,8 +145,7 @@ class GameState {
     this.nextItemCountdown = 100;
     this.itemsChance = new Chance(); // put in a level seed here!
 
-    this.collectableIcon = this.sprites.create(10, 10, 'ducky');
-    this.collectableText = this.game.add.text(70, 20, '0', {
+    this.collectableIcon = this.sprites.create(10, 10, 'ducky-icon');
       font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'left',

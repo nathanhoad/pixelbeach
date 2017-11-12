@@ -35,10 +35,21 @@ class LoadingState {
     this.game.load.spritesheet('cat-1', require('../assets/cat_surfer1_20x10.png'), 40, 20, 4);
     this.game.load.spritesheet('cat-2', require('../assets/cat_surfer2_20x10.png'), 40, 20, 4);
     this.game.load.spritesheet('cat-3', require('../assets/cat_surfer3_20x10.png'), 40, 20, 4);
+    this.game.load.spritesheet('hoff', require('../assets/hasselhoff_60x40.png'), 60, 40, 2);
+    this.game.load.spritesheet('loose-seal', require('../assets/loose_seal_68x48.png'), 68, 48, 2);
+    this.game.load.spritesheet('pink-poodle', require('../assets/pinkpoodle_60x40.png'), 60, 40, 2);
+    this.game.load.spritesheet('swan-floaty1', require('../assets/swanfloaty1_60x48.png'), 60, 48, 2);
+    this.game.load.spritesheet('swan-floaty2', require('../assets/swanfloaty2_60x48.png'), 60, 48, 2);
+    this.game.load.spritesheet('unicorn-floaty3', require('../assets/unicornfloaty3_60x40.png'), 60, 40, 2);
+    this.game.load.spritesheet('seagull', require('../assets/seagull_20x20.png'), 20, 20, 2);
+    this.game.load.spritesheet('shark', require('../assets/shark_60x40.png'), 60, 40, 2);
 
     // obstacles
     this.game.load.spritesheet('obstacle', require('../assets/mine_60x50.png'), 60, 50, 2);
     this.game.load.spritesheet('demogorgon', require('../assets/demogorgon_30_20.png'), 60, 40, 2);
+
+    // icon
+    this.game.load.image('ducky-icon', require('../assets/ducky.png'));
 
     //backgrounds
     this.game.load.image('wave-background', require('../assets/wave-background.png'));

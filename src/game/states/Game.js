@@ -18,16 +18,32 @@ const skins = {
 
 class GameState {
   create() {
-    this.game.stage.backgroundColor = '#64D6FE';
-    this.game.add.sprite(0, 100, 'ocean');
-    this.game.add.sprite(0, UPPER_BOUND, 'backwave');
+    this.game.add.sprite(0, 0, 'wave-background');
+    const waveTop = this.game.add.sprite(150, 177, 'water-top');
+    waveTop.animations.add('foam');
+    waveTop.animations.play('foam', 6, true);
+
+    // Float some clouds
+    this.clouds = this.game.add.group();
+    this.clouds.enableBody = true;
+    this.clouds.physicsBodyType = Phaser.Physics.ARCADE;
+    this.createCloud(150, 60);
+    this.createCloud(this.game.world.width - 50, 120);
+
+    // Create some speed lines
+    this.speedLines = this.game.add.group();
+    this.speedLines.enableBody = true;
+    this.speedLines.physicsBodyType = Phaser.Physics.ARCADE;
+    this.createSpeedLine(630, 300);
+    this.createSpeedLine(10, 380);
+
     // Group for any sprites
     this.sprites = this.game.add.group();
     this.sprites.enableBody = true;
     this.sprites.physicsBodyType = Phaser.Physics.ARCADE;
 
     // Create the player
-    this.player = this.sprites.create(200, LOWER_BOUND, 'player');
+    this.player = this.sprites.create(250, LOWER_BOUND, 'player');
 
     this.surfer = this.game.add.spine(0, 0, 'surfer');
 
@@ -85,7 +101,6 @@ class GameState {
     this.trick2.volume = 0.05;
     this.soundtrack.volume = 0.01;
 
-    // this.player.addChild(this.wash);
     this.wash.start(false, 5000, 20);
 
     // Keep track of how much air you should get
@@ -113,42 +128,44 @@ class GameState {
     // timer
     timer = this.game.time.create();
     timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-
     timer.start();
 
     // Mode
     this.mode = 'playing';
 
-    this.game.add.sprite(0, UPPER_BOUND, 'wave');
+    const wave = this.game.add.sprite(-40, UPPER_BOUND - 41, 'wave');
+    wave.animations.add('foam');
+    wave.animations.play('foam', 6, true);
+
     //wave froth
-    this.wavefroth1 = this.game.add.emitter(60, 400, 200);
-    this.wavefroth1.makeParticles(['wave-froth-lrg', 'wave-froth', 'wave-froth-lrg', 'wave-froth-hge']);
-    this.wavefroth1.maxParticleSpeed = new Phaser.Point(-100, 20);
-    this.wavefroth1.minParticleSpeed = new Phaser.Point(-200, -150);
-    this.wavefroth1.start(false, 1000, 1);
+    // this.wavefroth1 = this.game.add.emitter(60, 400, 200);
+    // this.wavefroth1.makeParticles(['wave-froth-lrg', 'wave-froth', 'wave-froth-lrg', 'wave-froth-hge']);
+    // this.wavefroth1.maxParticleSpeed = new Phaser.Point(-100, 20);
+    // this.wavefroth1.minParticleSpeed = new Phaser.Point(-200, -150);
+    // this.wavefroth1.start(false, 1000, 1);
 
-    this.wavefroth2 = this.game.add.emitter(170, UPPER_BOUND + 4, 200);
-    this.wavefroth2.makeParticles(['wash', 'wash2', 'wave-froth', 'wave-froth-sml']);
-    this.wavefroth2.maxParticleSpeed = new Phaser.Point(-100, 50);
-    this.wavefroth2.minParticleSpeed = new Phaser.Point(-200, -50);
-    this.wavefroth2.start(false, 1500, 1);
+    // this.wavefroth2 = this.game.add.emitter(170, UPPER_BOUND + 4, 200);
+    // this.wavefroth2.makeParticles(['wash', 'wash2', 'wave-froth', 'wave-froth-sml']);
+    // this.wavefroth2.maxParticleSpeed = new Phaser.Point(-100, 50);
+    // this.wavefroth2.minParticleSpeed = new Phaser.Point(-200, -50);
+    // this.wavefroth2.start(false, 1500, 1);
 
-    this.wavefroth3 = this.game.add.emitter(170, UPPER_BOUND + 4, 100);
-    this.wavefroth3.makeParticles(['wash', 'wash2', 'wave-froth-sml']);
-    this.wavefroth3.maxParticleSpeed = new Phaser.Point(-110, 10);
-    this.wavefroth3.minParticleSpeed = new Phaser.Point(-120, 40);
-    this.wavefroth3.start(false, 900, 0.2);
-    this.wavefroth3.gravity = 400;
+    // this.wavefroth3 = this.game.add.emitter(170, UPPER_BOUND + 4, 100);
+    // this.wavefroth3.makeParticles(['wash', 'wash2', 'wave-froth-sml']);
+    // this.wavefroth3.maxParticleSpeed = new Phaser.Point(-110, 10);
+    // this.wavefroth3.minParticleSpeed = new Phaser.Point(-120, 40);
+    // this.wavefroth3.start(false, 900, 0.2);
+    // this.wavefroth3.gravity = 400;
 
     this.wash.minRotation = 0;
     this.wash.maxRotation = 0;
 
-    this.wavefroth1.minRotation = 0;
-    this.wavefroth1.maxRotation = 0;
-    this.wavefroth2.minRotation = 0;
-    this.wavefroth2.maxRotation = 0;
-    this.wavefroth3.minRotation = 0;
-    this.wavefroth3.maxRotation = 0;
+    // this.wavefroth1.minRotation = 0;
+    // this.wavefroth1.maxRotation = 0;
+    // this.wavefroth2.minRotation = 0;
+    // this.wavefroth2.maxRotation = 0;
+    // this.wavefroth3.minRotation = 0;
+    // this.wavefroth3.maxRotation = 0;
 
     // this.game.add.sprite(0, LOWER_BOUND, 'wave-bottom');
     this.game.camera.flash('#000', 500, true);
@@ -383,6 +400,41 @@ class GameState {
     const minutes = '0' + Math.floor(s / 60);
     const seconds = '0' + (s - minutes * 60);
     return minutes.substr(-2) + ':' + seconds.substr(-2);
+  }
+
+  createCloud(x, y) {
+    x = x || this.game.world.width + 100;
+    y = y || Math.random() * 200;
+
+    let cloud = this.clouds.getFirstDead(true, x, y, 'menu-cloud');
+    cloud.checkWorldBounds = true;
+    cloud.events.onOutOfBounds.removeAll();
+    cloud.events.onOutOfBounds.add(target => {
+      if (target.x < 0 - target.width) {
+        target.x = this.game.world.width + target.width;
+      }
+    });
+
+    cloud.body.velocity.x = 0 - (2 + Math.random() * 6);
+  }
+
+  createSpeedLine(x, y) {
+    x = x || this.game.world.width + 100;
+    y = y || Math.random() * 200;
+
+    const speedLine = this.speedLines.getFirstDead(true, x, y, 'speed-line');
+    speedLine.animations.add('ripple');
+    speedLine.animations.play('ripple', 6, true);
+    speedLine.checkWorldBounds = true;
+    speedLine.events.onOutOfBounds.removeAll();
+    speedLine.events.onOutOfBounds.add(target => {
+      if (target.x < 0 - target.width) {
+        target.x = this.game.world.width + target.width;
+        target.y = UPPER_BOUND + 50 + Math.floor(Math.random() * (LOWER_BOUND - UPPER_BOUND));
+      }
+    });
+
+    speedLine.body.velocity.x = -800;
   }
 }
 module.exports = GameState;

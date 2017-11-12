@@ -1,145 +1,649 @@
 
 surfer.png
-size: 64,16
+size: 256,16
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 arm.skin.left
   rotate: false
-  xy: 2, 6
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.left.1
+  rotate: false
+  xy: 128, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 arm.skin.right
   rotate: false
-  xy: 2, 6
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.right.1
+  rotate: false
+  xy: 128, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 foot.skin.right
   rotate: false
-  xy: 2, 6
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.right.1
+  rotate: false
+  xy: 128, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 hand.skin.left
   rotate: false
-  xy: 2, 6
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.left.1
+  rotate: false
+  xy: 128, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 hand.skin.right
   rotate: false
-  xy: 2, 6
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.right.1
+  rotate: false
+  xy: 128, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 shin.skin.right
   rotate: false
-  xy: 2, 6
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.right.1
+  rotate: false
+  xy: 128, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.left.2
+  rotate: false
+  xy: 98, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.right.2
+  rotate: false
+  xy: 98, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.right.2
+  rotate: false
+  xy: 98, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.left.2
+  rotate: false
+  xy: 98, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.right.2
+  rotate: false
+  xy: 98, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.right.2
+  rotate: false
+  xy: 98, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.left.3
+  rotate: false
+  xy: 98, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.right.3
+  rotate: false
+  xy: 98, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.right.3
+  rotate: false
+  xy: 98, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.left.3
+  rotate: false
+  xy: 98, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.right.3
+  rotate: false
+  xy: 98, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.right.3
+  rotate: false
+  xy: 98, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.left.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.skin.right.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.left.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.right.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+forehead.skin.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.left.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hand.skin.right.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+head.skin.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+jaw.skin.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+neck.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.left.4
+  rotate: false
+  xy: 132, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.right.4
+  rotate: false
+  xy: 132, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 arm.wetsuit.left
   rotate: false
-  xy: 2, 2
+  xy: 102, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 belly.wetsuit.left
   rotate: false
-  xy: 2, 2
+  xy: 102, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 chest.wetsuit.left
   rotate: false
-  xy: 2, 2
+  xy: 102, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 hip.wetsuit.left
   rotate: false
-  xy: 2, 2
+  xy: 102, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 shoulder.wetsuit.left
   rotate: false
-  xy: 2, 2
+  xy: 102, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.wetsuit.left.green
+  rotate: false
+  xy: 102, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+belly.wetsuit.left.green
+  rotate: false
+  xy: 102, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+chest.wetsuit.left.green
+  rotate: false
+  xy: 102, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hip.wetsuit.left.green
+  rotate: false
+  xy: 102, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shoulder.wetsuit.left.green
+  rotate: false
+  xy: 102, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.wetsuit.left.red
+  rotate: false
+  xy: 136, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+belly.wetsuit.left.red
+  rotate: false
+  xy: 136, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+chest.wetsuit.left.red
+  rotate: false
+  xy: 136, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hip.wetsuit.left.red
+  rotate: false
+  xy: 136, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shoulder.wetsuit.left.red
+  rotate: false
+  xy: 136, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.wetsuit.left.yellow
+  rotate: false
+  xy: 106, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+belly.wetsuit.left.yellow
+  rotate: false
+  xy: 106, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+chest.wetsuit.left.yellow
+  rotate: false
+  xy: 106, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hip.wetsuit.left.yellow
+  rotate: false
+  xy: 106, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shoulder.wetsuit.left.yellow
+  rotate: false
+  xy: 106, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 arm.wetsuit.right
   rotate: false
-  xy: 40, 12
+  xy: 106, 2
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 knee.wetsuit.right
   rotate: false
-  xy: 40, 12
+  xy: 106, 2
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 shoulder.wetsuit.right
   rotate: false
-  xy: 40, 12
+  xy: 106, 2
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 thigh.wetsuit.right
   rotate: false
-  xy: 40, 12
+  xy: 106, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.wetsuit.right.green
+  rotate: false
+  xy: 140, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+knee.wetsuit.right.green
+  rotate: false
+  xy: 140, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shoulder.wetsuit.right.green
+  rotate: false
+  xy: 140, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+thigh.wetsuit.right.green
+  rotate: false
+  xy: 140, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.wetsuit.right.red
+  rotate: false
+  xy: 110, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+knee.wetsuit.right.red
+  rotate: false
+  xy: 110, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shoulder.wetsuit.right.red
+  rotate: false
+  xy: 110, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+thigh.wetsuit.right.red
+  rotate: false
+  xy: 110, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+arm.wetsuit.right.yellow
+  rotate: false
+  xy: 110, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+knee.wetsuit.right.yellow
+  rotate: false
+  xy: 110, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shoulder.wetsuit.right.yellow
+  rotate: false
+  xy: 110, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+thigh.wetsuit.right.yellow
+  rotate: false
+  xy: 110, 2
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 belly.wetsuit.right
   rotate: false
-  xy: 6, 6
+  xy: 144, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 chest.wetsuit.right
   rotate: false
-  xy: 6, 6
+  xy: 144, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 hip.wetsuit.right
   rotate: false
-  xy: 6, 6
+  xy: 144, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 knee.wetsuit.left
   rotate: false
-  xy: 6, 6
+  xy: 144, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 thigh.wetsuit.left
   rotate: false
-  xy: 6, 6
+  xy: 144, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+belly.wetsuit.right.green
+  rotate: false
+  xy: 114, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+chest.wetsuit.right.green
+  rotate: false
+  xy: 114, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hip.wetsuit.right.green
+  rotate: false
+  xy: 114, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+knee.wetsuit.left.green
+  rotate: false
+  xy: 114, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+thigh.wetsuit.left.green
+  rotate: false
+  xy: 114, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+belly.wetsuit.right.red
+  rotate: false
+  xy: 114, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+chest.wetsuit.right.red
+  rotate: false
+  xy: 114, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hip.wetsuit.right.red
+  rotate: false
+  xy: 114, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+knee.wetsuit.left.red
+  rotate: false
+  xy: 114, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+thigh.wetsuit.left.red
+  rotate: false
+  xy: 114, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+belly.wetsuit.right.yellow
+  rotate: false
+  xy: 148, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+chest.wetsuit.right.yellow
+  rotate: false
+  xy: 148, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hip.wetsuit.right.yellow
+  rotate: false
+  xy: 148, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+knee.wetsuit.left.yellow
+  rotate: false
+  xy: 148, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+thigh.wetsuit.left.yellow
+  rotate: false
+  xy: 148, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
@@ -151,65 +655,289 @@ board
   orig: 36, 4
   offset: 0, 0
   index: -1
+board.green
+  rotate: false
+  xy: 2, 4
+  size: 36, 4
+  orig: 36, 4
+  offset: 0, 0
+  index: -1
+board.purple
+  rotate: false
+  xy: 40, 10
+  size: 36, 4
+  orig: 36, 4
+  offset: 0, 0
+  index: -1
+board.red
+  rotate: false
+  xy: 78, 10
+  size: 36, 4
+  orig: 36, 4
+  offset: 0, 0
+  index: -1
+board.yellow
+  rotate: false
+  xy: 40, 4
+  size: 36, 4
+  orig: 36, 4
+  offset: 0, 0
+  index: -1
 foot.skin.left
   rotate: false
-  xy: 6, 2
+  xy: 118, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.left.1
+  rotate: false
+  xy: 118, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 shin.skin.left
   rotate: false
-  xy: 6, 2
+  xy: 118, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.left.1
+  rotate: false
+  xy: 118, 6
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.left.2
+  rotate: false
+  xy: 118, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.left.2
+  rotate: false
+  xy: 118, 2
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+foot.skin.left.3
+  rotate: false
+  xy: 152, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+shin.skin.left.3
+  rotate: false
+  xy: 152, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 forehead.skin
   rotate: false
-  xy: 44, 12
+  xy: 122, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
-hair.end
+forehead.skin.1
   rotate: false
-  xy: 10, 6
+  xy: 122, 6
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
-hair.middle
+forehead.skin.2
   rotate: false
-  xy: 10, 6
+  xy: 122, 2
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
-hair.top
+jaw.skin.2
   rotate: false
-  xy: 10, 6
+  xy: 122, 2
   size: 2, 2
   orig: 2, 2
+  offset: 0, 0
+  index: -1
+forehead.skin.3
+  rotate: false
+  xy: 156, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+jaw.skin.3
+  rotate: false
+  xy: 156, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.end.blonde
+  rotate: false
+  xy: 160, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.middle.blonde
+  rotate: false
+  xy: 160, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.end.brown
+  rotate: false
+  xy: 164, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.middle.brown
+  rotate: false
+  xy: 164, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.end.ginger
+  rotate: false
+  xy: 168, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.middle.ginger
+  rotate: false
+  xy: 168, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.end.pink
+  rotate: false
+  xy: 172, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.middle.pink
+  rotate: false
+  xy: 172, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+hair.top.blonde
+  rotate: false
+  xy: 116, 10
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+hair.top.brown
+  rotate: false
+  xy: 86, 4
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+hair.top.ginger
+  rotate: false
+  xy: 122, 10
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+hair.top.helmet
+  rotate: false
+  xy: 78, 2
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+hair.top.pink
+  rotate: false
+  xy: 92, 4
+  size: 4, 4
+  orig: 4, 4
   offset: 0, 0
   index: -1
 head.skin
   rotate: false
-  xy: 10, 2
+  xy: 176, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+head.skin.1
+  rotate: false
+  xy: 176, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+head.skin.2
+  rotate: false
+  xy: 180, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+neck.2
+  rotate: false
+  xy: 180, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+head.skin.3
+  rotate: false
+  xy: 184, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+neck.3
+  rotate: false
+  xy: 184, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 jaw.skin
   rotate: false
-  xy: 48, 12
+  xy: 188, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+jaw.skin.1
+  rotate: false
+  xy: 188, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 neck
   rotate: false
-  xy: 14, 6
+  xy: 192, 12
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+neck.1
+  rotate: false
+  xy: 192, 12
   size: 2, 2
   orig: 2, 2
   offset: 0, 0

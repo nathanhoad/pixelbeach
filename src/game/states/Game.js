@@ -1,4 +1,5 @@
 const Data = require('../data');
+const Chance = require('chance');
 
 const ACCELERATION = 30;
 const MAX_VERTICAL_SPEED = 400;
@@ -6,6 +7,14 @@ const UPPER_BOUND = 200;
 const LOWER_BOUND = 400;
 let isEmitting = false;
 let timer, timerEvent;
+
+const skins = {
+  wetsuits: ['wetsuit.green', 'wetsuit.yellow', 'wetsuit.purple', 'wetsuit.red'],
+  skins: ['skin.1', 'skin.2', 'skin.3', 'skin.4'],
+  hairs: ['hair.blonde', 'hair.brunette', 'hair.ginger', 'hair.pink'],
+  helmets: ['helmet'],
+  boards: ['board.red', 'board.green', 'board.yellow', 'board.purple']
+};
 
 class GameState {
   create() {
@@ -30,6 +39,27 @@ class GameState {
 
     this.surfer.setMixByName('idle-up', 'idle-down', 0.2);
     this.surfer.setMixByName('idle-down', 'idle-up', 0.2);
+
+    // Why use Chance? We can pass the constructor any seed, so it'll
+    // generate the same one each time. Based on user id, or user name?
+    // Or even just a "generate new character" button?
+    const playerChance = new Chance();
+
+    const skinElements = [
+      playerChance.pickone(skins.wetsuits),
+      playerChance.pickone(skins.skins),
+      playerChance.pickone(skins.hairs),
+      playerChance.pickone(skins.boards)
+    ];
+
+    if (playerChance.bool({ likelihood: 25 })) {
+      skinElements.unshift(playerChance.pickone(skins.helmets));
+    }
+    const skin = this.surfer.createCombinedSkin('player', ...skinElements);
+
+    this.surfer.setSkin(skin);
+    // this.surfer.setSkinByName('helmet');
+    this.surfer.setToSetupPose();
 
     this.player.addChild(this.surfer);
 
@@ -347,12 +377,12 @@ class GameState {
 
   endTimer() {
     timer.stop();
-  };
+  }
 
   formatTime(s) {
-    const minutes = "0" + Math.floor(s / 60);
-    const seconds = "0" + (s - minutes * 60);
-    return minutes.substr(-2) + ":" + seconds.substr(-2);
+    const minutes = '0' + Math.floor(s / 60);
+    const seconds = '0' + (s - minutes * 60);
+    return minutes.substr(-2) + ':' + seconds.substr(-2);
   }
 }
 module.exports = GameState;

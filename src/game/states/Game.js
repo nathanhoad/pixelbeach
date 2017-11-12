@@ -12,7 +12,8 @@ const skins = {
   wetsuits: ['wetsuit.green', 'wetsuit.yellow', 'wetsuit.purple', 'wetsuit.red'],
   skins: ['skin.1', 'skin.2', 'skin.3', 'skin.4'],
   hairs: ['hair.blonde', 'hair.brunette', 'hair.ginger', 'hair.pink'],
-  helmets: ['helmet']
+  helmets: ['helmet'],
+  boards: ['board.red', 'board.green', 'board.yellow', 'board.purple']
 };
 
 class GameState {
@@ -47,7 +48,8 @@ class GameState {
     const skinElements = [
       playerChance.pickone(skins.wetsuits),
       playerChance.pickone(skins.skins),
-      playerChance.pickone(skins.hairs)
+      playerChance.pickone(skins.hairs),
+      playerChance.pickone(skins.boards)
     ];
 
     if (playerChance.bool({ likelihood: 25 })) {
@@ -375,12 +377,12 @@ class GameState {
 
   endTimer() {
     timer.stop();
-  };
+  }
 
   formatTime(s) {
-    const minutes = "0" + Math.floor(s / 60);
-    const seconds = "0" + (s - minutes * 60);
-    return minutes.substr(-2) + ":" + seconds.substr(-2);
+    const minutes = '0' + Math.floor(s / 60);
+    const seconds = '0' + (s - minutes * 60);
+    return minutes.substr(-2) + ':' + seconds.substr(-2);
   }
 }
 module.exports = GameState;

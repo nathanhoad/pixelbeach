@@ -12,7 +12,6 @@ class LoadingState {
     this.game.renderer.renderSession.roundPixels = true;
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
-    console.log(PhaserSpine);
     // Load plugins
     this.game.add.plugin(PhaserSpine.SpinePlugin);
 
@@ -23,10 +22,10 @@ class LoadingState {
       'surfer', //The key used for Phaser's cache
       require('../spines/surfer') //The location of the spine's json file
     );
-    this.game.load.image('obstacle', require('../assets/wash.png'));
+    this.game.load.image('obstacle', require('../assets/big-box.png'));
 
     //wash assets
-    this.game.load.image('wash', require('../assets/white-box.png'));
+    this.game.load.image('wash', require('../assets/wash.png'));
     this.game.load.image('wash2', require('../assets/wash2.png'));
   }
 

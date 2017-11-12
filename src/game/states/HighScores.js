@@ -1,7 +1,4 @@
-const Immutable = require('immutable');
-
-const Store = require('../store');
-const Actions = require('../actions');
+const Data = require('../data');
 
 class HighScores {
   create() {
@@ -28,35 +25,34 @@ class HighScores {
       this.game.state.start('menu');
     }, this);
 
-    this.highScores = Immutable.Range(0, 5)
-      .map(n => {
-        const text = this.game.add.text(0, 0, '', {
-          font: `bold ${21 - n}px Courier New`,
-          fill: '#ffffff',
-          boundsAlignH: 'center',
-          boundsAlignV: 'middle'
-        });
+    this.scoreTexts = [];
+    for (let i = 0; i < 5; i++) {
+      let text = this.game.add.text(0, 0, '', {
+        font: `bold ${21 - i}px Courier New`,
+        fill: '#ffffff',
+        boundsAlignH: 'center',
+        boundsAlignV: 'middle'
+      });
 
-        text.setTextBounds(5, 100 + 28 * n, this.game.world.width - 5, 20);
-        text.alpha = 0;
+      text.setTextBounds(5, 100 + 28 * i, this.game.world.width - 5, 20);
+      text.alpha = 0;
 
-        return text;
-      })
-      .toList();
+      this.scoreTexts.push(text);
+    }
 
-    Store.dispatch(Actions.fetchTopScores());
+    Data.loadHighScores().then(scores => {
+      this.scores = scores;
+    });
   }
 
   update() {
-    const scores = Store.getHighScores(Store.getState()).take(5);
-
-    scores.forEach((score, i) => {
-      const scoreText = this.highScores.get(i);
-      const name = score.get('userName') || 'unknown player';
-      const amount = score.get('score') || 0;
-      scoreText.text = `${name.substr(0, 50)}: ${amount}`;
-      scoreText.alpha = 1 - i * 0.1;
-    });
+    if (this.scores) {
+      this.scores.forEach((score, i) => {
+        const scoreText = this.scoreTexts[i];
+        scoreText.text = `${score.get('userName', 'Unknown').substr(0, 50)}: ${score.get('score')}`;
+        scoreText.alpha = 1 - i * 0.1;
+      });
+    }
   }
 }
 

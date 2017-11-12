@@ -345,32 +345,38 @@ class GameState {
         // Nothing needs to bounce so this should never be called
       },
       (p, s) => {
-        switch (s.key) {
-          case 'item':
-          case 'ducky':
-            if (!s.isCollected) {
-              this.pickUp.play();
-              s.isCollected = true;
-              s.body.velocity.x = 0;
-              this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
-              // TODO: put a score thing in the corner where this flies to and add stuff to it
+        if (ITEMS.collectables.includes(s.key)) {
+          if (!s.isCollected) {
+            this.pickUp.play();
+            s.isCollected = true;
+            s.body.velocity.x = 0;
+            this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
+            // TODO: put a score thing in the corner where this flies to and add stuff to it
 
-              // TODO: different points for different things
-              // and multipliers
-              Data.collectCollectable();
-            }
-            return false;
-
-          case 'obstacle':
-            // TODO: Custom death animation based on obstacle
-            // ...
-            this.fail.play();
-            this.gameOver();
-            return false;
-
-          default:
-            return true;
+            // TODO: different points for different things
+            // and multipliers
+            Data.collectCollectable();
+          }
+          return false;
+        } else if (ITEMS.obstacles.includes(s.key)) {
+          this.fail.play();
+          this.gameOver();
+          return false;
+        } else {
+          return true;
         }
+
+        // switch (s.key) {
+        //   case 'item':
+        //   case 'ducky':
+
+        //   case 'obstacle':
+        //     // TODO: Custom death animation based on obstacle
+        //     // ...
+
+        //   default:
+        //     return true;
+        // }
       }
     );
   }

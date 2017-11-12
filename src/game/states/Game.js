@@ -17,9 +17,20 @@ const SKINS = {
 };
 
 const ITEMS = {
-  collectables: ['ducky', 'beachball-1', 'beachball-2', 'cat-1', 'cat-2', 'cat-3'],
-  obstacles: ['obstacle', 'demogorgon']
+  collectables: [
+    { sprite: 'ducky', animates: false },
+    { sprite: 'beachball-1', animates: false },
+    { sprite: 'beachball-2', animates: false },
+    { sprite: 'cat-1', animates: true },
+    { sprite: 'cat-2', animates: true },
+    { sprite: 'cat-3', animates: true }
+  ],
+  obstacles: [{ sprite: 'obstacle', animates: false }, { sprite: 'demogorgon', animates: false }]
 };
+
+// For fast checking to which a sprite belongs using array.includes (collision)
+const COLLECTABLE_SPRITES = ITEMS.collectables.map(col => col.sprite);
+const OBSTACLE_SPRITES = ITEMS.obstacles.map(col => col.sprite);
 
 class GameState {
   create() {
@@ -305,13 +316,17 @@ class GameState {
     if (this.nextItemCountdown === 0) {
       // TODO: have some smarts over whether to create a collectable or an obstacle
       const isObstacle = this.itemsChance.bool({ likelihood: 40 });
-      const key = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables); // TODO: other items?
+      const itemConfig = this.itemsChance.pickone(isObstacle ? ITEMS.obstacles : ITEMS.collectables);
 
       const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
 
-      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, key);
-      item.scale.x = 1.5;
-      item.scale.y = 1.5;
+      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, itemConfig.sprite);
+      item.scale.x = itemConfig.scale || 1.5;
+      item.scale.y = itemConfig.scale || 1.5;
+      if (itemConfig.animates) {
+        item.animations.add('sheet');
+        item.animations.play('sheet', 7, true);
+      }
 
       if (isObstacle) {
         item.isObstacle = true;
@@ -345,7 +360,7 @@ class GameState {
         // Nothing needs to bounce so this should never be called
       },
       (p, s) => {
-        if (ITEMS.collectables.includes(s.key)) {
+        if (COLLECTABLE_SPRITES.includes(s.key)) {
           if (!s.isCollected) {
             this.pickUp.play();
             s.isCollected = true;
@@ -358,7 +373,7 @@ class GameState {
             Data.collectCollectable();
           }
           return false;
-        } else if (ITEMS.obstacles.includes(s.key)) {
+        } else if (OBSTACLE_SPRITES.includes(s.key)) {
           this.fail.play();
           this.gameOver();
           return false;

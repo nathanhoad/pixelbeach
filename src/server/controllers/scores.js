@@ -36,14 +36,26 @@ exports.getIndex = {
 };
 
 exports.postIndex = {
+  auth: {
+    strategy: 'token',
+    mode: 'try'
+  },
+
   response: {
     schema: ScoreResource.options({ stripUnknown: { objects: true, arrays: false } }),
     modify: true
   },
+
   async handler(request, reply) {
-    // TODO: use JWT to get a User ID and get the name
-    // ...then remove this:
-    const userId = 'be88d1c1-0362-4821-8b5c-9195c49e7bf4';
+    var userId, token;
+
+    if (request.auth.isAuthenticated) {
+      userId = request.auth.credentials.uid;
+    } else {
+      userId = uuid();
+    }
+
+    // TODO: accept this from request payload
     const userName = 'Nathan';
 
     // Default counter caches

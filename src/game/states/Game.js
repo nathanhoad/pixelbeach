@@ -43,6 +43,16 @@ class GameState {
     this.pickUp = this.game.add.audio('pickup');
     this.fail = this.game.add.audio('fail');
     this.trick2 = this.game.add.audio('trick2');
+    this.soundtrack = new Phaser.Sound(this.game, 'soundtrack', 1, true);
+
+    // Play the soundtrack
+    this.soundtrack.play();
+
+    // Turn the fucking volume down
+    this.pickUp.volume = 0.05;
+    this.fail.volume = 0.05;
+    this.trick2.volume = 0.05;
+    this.soundtrack.volume = 0.01;
 
     // this.player.addChild(this.wash);
     this.wash.start(false, 5000, 20);

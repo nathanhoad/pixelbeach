@@ -21,7 +21,7 @@ class LoadingState {
     this.game.load.image('ducky', require('../assets/ducky.png'));
     this.game.load.spine('surfer', require('../spines/surfer'));
 
-    this.game.load.image('obstacle', require('../assets/big-box.png'));
+    this.game.load.image('obstacle', require('../assets/mine.png'));
 
     //backgrounds
     this.game.load.image('ocean', require('../assets/ocean.png'));
@@ -37,10 +37,12 @@ class LoadingState {
     this.game.load.image('wave-froth', require('../assets/wave-froth.png'));
     this.game.load.image('wave-froth-lrg', require('../assets/wave-froth-lrg.png'));
     this.game.load.image('wave-froth-hge', require('../assets/big-box.png'));
+
     //audio
     this.game.load.audio('pickup', require('../assets/pickup.wav'));
     this.game.load.audio('fail', require('../assets/fail.wav'));
     this.game.load.audio('trick2', require('../assets/trick2.wav'));
+    this.game.load.audio('soundtrack', require('../assets/surf1.wav'));
   }
 
   create() {

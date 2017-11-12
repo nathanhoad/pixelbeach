@@ -371,6 +371,7 @@ class GameState {
       (p, s) => {
         if (COLLECTABLE_SPRITES.includes(s.key)) {
           if (!s.isCollected) {
+            let itemConfig = ITEMS.collectables.find(item => item.sprite === s.key);
             this.pickUp.play();
             s.isCollected = true;
             s.body.velocity.x = 0;
@@ -379,6 +380,7 @@ class GameState {
 
             // TODO: different points for different things
             // and multipliers
+            Data.addPoints(itemConfig.points);
             Data.collectCollectable();
           }
           return false;
@@ -407,7 +409,7 @@ class GameState {
   }
 
   handleScore() {
-    this.collectableText.text = Data.get('collectables');
+    this.collectableText.text = Data.get('points');
   }
 
   gameOver() {

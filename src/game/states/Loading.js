@@ -5,10 +5,9 @@ class LoadingState {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.time.advancedTiming = true;
 
-    // TODO: set the scale factor based on the browsers width/height
-
+    const factor = Math.min(window.innerWidth / 640, window.innerHeight / 480) * 0.95;
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-    this.game.scale.setUserScale(1.5, 1.5);
+    this.game.scale.setUserScale(factor, factor);
     this.game.renderer.renderSession.roundPixels = true;
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
@@ -16,6 +15,12 @@ class LoadingState {
     this.game.add.plugin(PhaserSpine.SpinePlugin);
 
     // Load assets
+    this.game.load.image('menu-background', require('../assets/menu-background.png'));
+    this.game.load.image('menu-wave-1', require('../assets/wave-1.png'));
+    this.game.load.image('menu-wave-2', require('../assets/wave-2.png'));
+    this.game.load.image('menu-cloud', require('../assets/cloud.png'));
+    this.game.load.image('title', require('../assets/title.png'));
+
     this.game.load.image('player', require('../assets/player.png'));
 
     this.game.load.image('ducky', require('../assets/ducky.png'));

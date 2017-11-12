@@ -36,6 +36,11 @@ class GameState {
     this.wash.maxParticleSpeed = new Phaser.Point(-100, 50);
     this.wash.minParticleSpeed = new Phaser.Point(-200, -50);
 
+    // Audio
+    this.pickUp = this.game.add.audio('pickup');
+    this.fail = this.game.add.audio('fail');
+    this.trick2 = this.game.add.audio('trick2');
+
     // this.player.addChild(this.wash);
     this.wash.start(false, 5000, 20);
 
@@ -77,99 +82,100 @@ class GameState {
   // Internal helpers
 
   handlePlayer() {
-    let isTricking = false;
+      let isTricking = false;
 
-    this.wash.x = this.player.x - 10;
-    this.wash.y = this.player.y + 10;
+      this.wash.x = this.player.x - 10;
+      this.wash.y = this.player.y + 10;
 
-    // Movement
+      // Movement
 
-    if (this.player.y < UPPER_BOUND) {
-      // Player is in the sky
-      if (this.player.body.gravity.y === 0) {
-        // 500 is the lowest gravity
-        let gravity;
-        if (this.playerMomentum > 160) {
-          gravity = 450;
-        } else if (this.playerMomentum > 120) {
-          gravity = 700;
-        } else if (this.playerMomentum > 60) {
-          gravity = 900;
-        } else {
-          gravity = 1100;
+      if (this.player.y < UPPER_BOUND) {
+        // Player is in the sky
+        if (this.player.body.gravity.y === 0) {
+          this.trick2.play();
+          // 500 is the lowest gravity
+          let gravity;
+          if (this.playerMomentum > 160) {
+            gravity = 450;
+          } else if (this.playerMomentum > 120) {
+            gravity = 700;
+          } else if (this.playerMomentum > 60) {
+            gravity = 900;
+          } else {
+            gravity = 1100;
+          }
+
+          this.player.body.gravity.y = gravity;
+          this.playerMomentum = 0;
         }
-
-        this.player.body.gravity.y = gravity;
-        this.playerMomentum = 0;
-      }
-    } else {
-      this.player.body.gravity.y = 0;
-
-      if (this.game.input.activePointer.isDown) {
-        // The player has actually done something so we can start
-        // generating collectables and obstacles
-        this.hasStarted = true;
-
-        this.playerMomentum = Math.max(this.playerMomentum, this.player.y - UPPER_BOUND);
-
-        this.player.body.velocity.y -= ACCELERATION;
-        if (this.player.body.velocity.y < 0 - MAX_VERTICAL_SPEED) {
-          this.player.body.velocity.y = 0 - MAX_VERTICAL_SPEED;
-        }
-        // }
       } else {
-        this.playerMomentum = 1;
+        this.player.body.gravity.y = 0;
 
-        // Player falls to the bottom of the wave
-        if (this.player.y < LOWER_BOUND) {
-          this.player.body.velocity.y += ACCELERATION;
-          if (this.player.body.velocity.y > MAX_VERTICAL_SPEED) {
-            this.player.body.velocity.y = MAX_VERTICAL_SPEED;
+        if (this.game.input.activePointer.isDown) {
+          // The player has actually done something so we can start
+          // generating collectables and obstacles
+          this.hasStarted = true;
+
+          this.playerMomentum = Math.max(this.playerMomentum, this.player.y - UPPER_BOUND);
+
+          this.player.body.velocity.y -= ACCELERATION;
+          if (this.player.body.velocity.y < 0 - MAX_VERTICAL_SPEED) {
+            this.player.body.velocity.y = 0 - MAX_VERTICAL_SPEED;
           }
+          // }
         } else {
-          // Decelerate near the bottom
-          this.player.body.velocity.y -= ACCELERATION * 2;
-          if (this.player.body.velocity.y < 0) {
-            this.player.body.velocity.y = 0;
+          this.playerMomentum = 1;
+
+          // Player falls to the bottom of the wave
+          if (this.player.y < LOWER_BOUND) {
+            this.player.body.velocity.y += ACCELERATION;
+            if (this.player.body.velocity.y > MAX_VERTICAL_SPEED) {
+              this.player.body.velocity.y = MAX_VERTICAL_SPEED;
+            }
+          } else {
+            // Decelerate near the bottom
+            this.player.body.velocity.y -= ACCELERATION * 2;
+            if (this.player.body.velocity.y < 0) {
+              this.player.body.velocity.y = 0;
+            }
           }
         }
       }
-    }
 
-    if (this.player.y < UPPER_BOUND) {
-      isTricking = true;
-    } else {
-      isTricking = false;
-    }
-
-    // Animations
-    if (this.player.body.velocity.y < 0) {
-      if (this.surfer.anim !== 'idle-up') {
-        this.surfer.setAnimationByName(0, 'idle-up', true);
-        this.surfer.anim = 'idle-up';
+      if (this.player.y < UPPER_BOUND) {
+        isTricking = true;
+      } else {
+        isTricking = false;
       }
-    } else if (this.player.body.velocity.y > 0) {
-      if (this.surfer.anim !== 'idle-down') {
-        this.surfer.setAnimationByName(0, 'idle-down', true);
-        this.surfer.anim = 'idle-down';
-      }
-    } else {
-      if (this.surfer.anim !== 'idle') {
-        this.surfer.setAnimationByName(0, 'idle', true);
-        this.surfer.anim = 'idle';
-      }
-    }
 
-    if (isTricking) {
-      this.wash.on = false;
-      isEmitting = false;
-    }
+      // Animations
+      if (this.player.body.velocity.y < 0) {
+        if (this.surfer.anim !== 'idle-up') {
+          this.surfer.setAnimationByName(0, 'idle-up', true);
+          this.surfer.anim = 'idle-up';
+        }
+      } else if (this.player.body.velocity.y > 0) {
+        if (this.surfer.anim !== 'idle-down') {
+          this.surfer.setAnimationByName(0, 'idle-down', true);
+          this.surfer.anim = 'idle-down';
+        }
+      } else {
+        if (this.surfer.anim !== 'idle') {
+          this.surfer.setAnimationByName(0, 'idle', true);
+          this.surfer.anim = 'idle';
+        }
+      }
 
-    if (!isTricking && !isEmitting) {
-      this.wash.start(false, 5000, 20);
-      isEmitting = true;
+      if (isTricking) {
+        this.wash.on = false;
+        isEmitting = false;
+      }
+
+      if (!isTricking && !isEmitting) {
+        this.wash.start(false, 5000, 20);
+        isEmitting = true;
+      }
     }
-  }
 
   handleItems() {
     // Don't start generating items until the player has actually
@@ -222,6 +228,7 @@ class GameState {
           case 'item':
           case 'ducky':
             if (!s.isCollected) {
+              this.pickUp.play();
               s.isCollected = true;
               s.body.velocity.x = 0;
               this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
@@ -236,6 +243,7 @@ class GameState {
           case 'obstacle':
             // TODO: Custom death animation based on obstacle
             // ...
+            this.fail.play();
             this.gameOver();
             return false;
 

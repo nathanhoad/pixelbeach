@@ -4,11 +4,11 @@ class MenuState {
     const background = this.game.add.sprite(0, 0, 'menu-background');
 
     const wave1 = this.game.add.sprite(-5, 280, 'menu-wave-1');
-    const wave1Tween = this.game.add.tween(wave1).to({ y: 285 }, 1500, Phaser.Easing.Bounce.InOut, true, 0, -1);
+    const wave1Tween = this.game.add.tween(wave1).to({ y: 285 }, 1500, 'Linear', true, 0, -1);
     wave1Tween.yoyo(true, 1000);
 
     const wave2 = this.game.add.sprite(-40, 284, 'menu-wave-2');
-    const wave2Tween = this.game.add.tween(wave2).to({ y: 290 }, 1500, Phaser.Easing.Bounce.InOut, true, 0, -1);
+    const wave2Tween = this.game.add.tween(wave2).to({ y: 290 }, 1500, 'Linear', true, 0, -1);
     wave2Tween.yoyo(true, 1100);
 
     this.clouds = this.game.add.group();

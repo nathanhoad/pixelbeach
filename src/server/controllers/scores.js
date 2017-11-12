@@ -51,8 +51,16 @@ exports.postIndex = authKey => ({
     modify: true
   },
 
+  validate: {
+    payload: {
+      // TODO: accept user name through
+      // userName: Joi.reach(ScoreResource, 'userName').required(),
+      score: Joi.reach(ScoreResource, 'score').required()
+    }
+  },
+
   async handler(request, reply) {
-    var userId, token;
+    var userId;
 
     if (request.auth.isAuthenticated) {
       userId = request.auth.credentials.uid;

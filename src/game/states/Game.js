@@ -31,6 +31,9 @@ class GameState {
     this.surfer.setMixByName('idle-up', 'idle-down', 0.2);
     this.surfer.setMixByName('idle-down', 'idle-up', 0.2);
 
+    this.surfer.setSkinByName('helmet');
+    this.surfer.setToSetupPose();
+
     this.player.addChild(this.surfer);
 
     // Particles

@@ -8,35 +8,9 @@ const LOWER_BOUND = 400;
 let isEmitting = false;
 let timer, timerEvent;
 
-const SKINS = {
-  wetsuits: ['wetsuit.green', 'wetsuit.yellow', 'wetsuit.purple', 'wetsuit.red'],
-  skins: ['skin.1', 'skin.2', 'skin.3', 'skin.4'],
-  hairs: ['hair.blonde', 'hair.brunette', 'hair.ginger', 'hair.pink'],
-  helmets: ['helmet'],
-  boards: ['board.red', 'board.green', 'board.yellow', 'board.purple']
-};
-
 const ITEMS = {
-  collectables: [
-    { sprite: 'ducky', animates: true, scale: 1, points: 10 },
-    { sprite: 'beachball-1', animates: true, scale: 1, points: 10 },
-    { sprite: 'beachball-2', animates: true, scale: 1, points: 10 },
-    { sprite: 'cat-1', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'cat-2', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'cat-3', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'hoff', animates: true, scale: 0.75, points: 50 },
-    { sprite: 'pink-poodle', animates: true, scale: 0.95, points: 25 },
-    { sprite: 'swan-floaty1', animates: true, scale: 0.65, points: 25 },
-    { sprite: 'swan-floaty2', animates: true, scale: 0.65, points: 10 },
-    { sprite: 'unicorn-floaty3', animates: true, scale: 0.65, points: 100 },
-    { sprite: 'seagull', animates: true, scale: 0.75, points: 10 }
-  ],
-  obstacles: [
-    { sprite: 'obstacle', animates: true, scale: 1, name: 'Mine' },
-    { sprite: 'demogorgon', animates: true, scale: 1, name: 'Demogorgon' },
-    { sprite: 'shark', animates: true, scale: 1, name: 'Shark' },
-    { sprite: 'loose-seal', animates: true, scale: 0.75, name: 'Loose Seal' }
-  ]
+  collectables: [{ sprite: 'beachball', animates: true, scale: 1, points: 10 }],
+  obstacles: [{ sprite: 'mine', animates: true, scale: 1, name: 'Mine' }]
 };
 
 // For fast checking to which a sprite belongs using array.includes (collision)
@@ -52,8 +26,8 @@ class GameState {
   create() {
     Data.reset();
 
-    this.game.add.sprite(0, 0, 'wave-background');
-    const waveTop = this.game.add.sprite(150, 177, 'water-top');
+    this.game.add.sprite(0, 0, 'game-background');
+    const waveTop = this.game.add.sprite(150, 177, 'game-wave-top');
     waveTop.animations.add('foam');
     waveTop.animations.play('foam', 6, true);
 
@@ -79,51 +53,20 @@ class GameState {
     // Create the player
     this.player = this.sprites.create(250, LOWER_BOUND, 'player');
 
-    this.surfer = this.game.add.spine(0, 0, 'surfer');
-
-    this.surfer.setMixByName('idle', 'idle-up', 0.2);
-    this.surfer.setMixByName('idle', 'idle-down', 0.2);
-
-    this.surfer.setMixByName('idle-up', 'idle', 0.2);
-    this.surfer.setMixByName('idle-down', 'idle', 0.2);
-
-    this.surfer.setMixByName('idle-up', 'idle-down', 0.2);
-    this.surfer.setMixByName('idle-down', 'idle-up', 0.2);
-
-    // Why use Chance? We can pass the constructor any seed, so it'll
-    // generate the same one each time. Based on user id, or user name?
-    // Or even just a "generate new character" button?
-    const playerChance = new Chance();
-
-    const skinElements = [
-      playerChance.pickone(SKINS.wetsuits),
-      playerChance.pickone(SKINS.skins),
-      playerChance.pickone(SKINS.hairs),
-      playerChance.pickone(SKINS.boards)
-    ];
-
-    if (playerChance.bool({ likelihood: 25 })) {
-      skinElements.unshift(playerChance.pickone(SKINS.helmets));
-    }
-    const skin = this.surfer.createCombinedSkin('player', ...skinElements);
-
-    this.surfer.setSkin(skin);
-    // this.surfer.setSkinByName('helmet');
-    this.surfer.setToSetupPose();
-
-    this.player.addChild(this.surfer);
-
     // Particles
     this.wash = this.game.add.emitter(100, 100, 200);
     // this.wash.gravity = 200;
-    this.wash.makeParticles(['wash', 'wash2']);
+    this.wash.makeParticles(['surfer-wash-1', 'surfer-wash-2']);
     this.wash.maxParticleSpeed = new Phaser.Point(-100, 50);
     this.wash.minParticleSpeed = new Phaser.Point(-200, -50);
+    this.wash.minRotation = 0;
+    this.wash.maxRotation = 0;
 
     // Audio
     this.pickUp = this.game.add.audio('pickup');
     this.fail = this.game.add.audio('fail');
     this.trick2 = this.game.add.audio('trick2');
+
     this.soundtrack = new Phaser.Sound(this.game, 'soundtrack', 1, true);
 
     // Play the soundtrack
@@ -145,7 +88,7 @@ class GameState {
     this.nextItemCountdown = 100;
     this.itemsChance = new Chance(); // put in a level seed here!
 
-    this.collectableIcon = this.sprites.create(10, 10, 'ducky-icon');
+    // this.collectableIcon = this.sprites.create(10, 10, 'ducky-icon');
     this.collectableText = this.game.add.text(70, 20, '0', {
       font: 'bold 20px Arial',
       fill: 'white',
@@ -167,47 +110,17 @@ class GameState {
     timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
     timer.start();
 
-    // Mode
-    this.mode = 'playing';
-
-    const wave = this.game.add.sprite(-40, UPPER_BOUND - 41, 'wave');
+    const wave = this.game.add.sprite(-40, UPPER_BOUND - 41, 'game-wave');
     wave.animations.add('foam');
     wave.animations.play('foam', 6, true);
 
-    //wave froth
-    // this.wavefroth1 = this.game.add.emitter(60, 400, 200);
-    // this.wavefroth1.makeParticles(['wave-froth-lrg', 'wave-froth', 'wave-froth-lrg', 'wave-froth-hge']);
-    // this.wavefroth1.maxParticleSpeed = new Phaser.Point(-100, 20);
-    // this.wavefroth1.minParticleSpeed = new Phaser.Point(-200, -150);
-    // this.wavefroth1.start(false, 1000, 1);
-
-    // this.wavefroth2 = this.game.add.emitter(170, UPPER_BOUND + 4, 200);
-    // this.wavefroth2.makeParticles(['wash', 'wash2', 'wave-froth', 'wave-froth-sml']);
-    // this.wavefroth2.maxParticleSpeed = new Phaser.Point(-100, 50);
-    // this.wavefroth2.minParticleSpeed = new Phaser.Point(-200, -50);
-    // this.wavefroth2.start(false, 1500, 1);
-
-    // this.wavefroth3 = this.game.add.emitter(170, UPPER_BOUND + 4, 100);
-    // this.wavefroth3.makeParticles(['wash', 'wash2', 'wave-froth-sml']);
-    // this.wavefroth3.maxParticleSpeed = new Phaser.Point(-110, 10);
-    // this.wavefroth3.minParticleSpeed = new Phaser.Point(-120, 40);
-    // this.wavefroth3.start(false, 900, 0.2);
-    // this.wavefroth3.gravity = 400;
-
-    this.wash.minRotation = 0;
-    this.wash.maxRotation = 0;
-
-    // this.wavefroth1.minRotation = 0;
-    // this.wavefroth1.maxRotation = 0;
-    // this.wavefroth2.minRotation = 0;
-    // this.wavefroth2.maxRotation = 0;
-    // this.wavefroth3.minRotation = 0;
-    // this.wavefroth3.maxRotation = 0;
-
-    // this.game.add.sprite(0, LOWER_BOUND, 'wave-bottom');
+    // Fade in
     this.game.camera.flash('#000', 500, true);
 
     this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+
+    // Mode
+    this.mode = 'playing';
   }
 
   update() {
@@ -301,22 +214,22 @@ class GameState {
     }
 
     // Animations
-    if (this.player.body.velocity.y < 0) {
-      if (this.surfer.anim !== 'idle-up') {
-        this.surfer.setAnimationByName(0, 'idle-up', true);
-        this.surfer.anim = 'idle-up';
-      }
-    } else if (this.player.body.velocity.y > 0) {
-      if (this.surfer.anim !== 'idle-down') {
-        this.surfer.setAnimationByName(0, 'idle-down', true);
-        this.surfer.anim = 'idle-down';
-      }
-    } else {
-      if (this.surfer.anim !== 'idle') {
-        this.surfer.setAnimationByName(0, 'idle', true);
-        this.surfer.anim = 'idle';
-      }
-    }
+    // if (this.player.body.velocity.y < 0) {
+    //   if (this.surfer.anim !== 'idle-up') {
+    //     this.surfer.setAnimationByName(0, 'idle-up', true);
+    //     this.surfer.anim = 'idle-up';
+    //   }
+    // } else if (this.player.body.velocity.y > 0) {
+    //   if (this.surfer.anim !== 'idle-down') {
+    //     this.surfer.setAnimationByName(0, 'idle-down', true);
+    //     this.surfer.anim = 'idle-down';
+    //   }
+    // } else {
+    //   if (this.surfer.anim !== 'idle') {
+    //     this.surfer.setAnimationByName(0, 'idle', true);
+    //     this.surfer.anim = 'idle';
+    //   }
+    // }
 
     if (isTricking) {
       this.wash.on = false;
@@ -408,7 +321,7 @@ class GameState {
             // TODO: different points for different things
             // and multipliers
             Data.addPoints(itemConfig.points);
-            Data.collectCollectable();
+            // Data.collectCollectable();
           }
           return false;
         } else if (OBSTACLE_SPRITES.includes(s.key)) {
@@ -468,7 +381,7 @@ class GameState {
     this.player.body.velocity.y = 0;
 
     this.mode = 'gameover';
-    this.surfer.anim = 'idle';
+    // this.surfer.anim = 'idle';
   }
 
   endTimer() {

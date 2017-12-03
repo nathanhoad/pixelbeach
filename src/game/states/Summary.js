@@ -19,7 +19,7 @@ class SummaryState {
       const surfer = this.game.add.sprite(this.game.world.width / 2, -100, 'summary-surfer');
       const surferTween = this.game.add.tween(surfer).to({ y: 180 }, 1500, Phaser.Easing.Circular.Out, true, 500, 0);
       surferTween.onComplete.add(() => {
-        Data.submitScore();
+        // Data.submitScore();
       });
     } else {
       title = `YOU DIDN'T MAKE IT...`;
@@ -27,7 +27,7 @@ class SummaryState {
         title = `YOU HIT A ${Data.get('diedReason').toUpperCase()}!`;
       }
       setTimeout(() => {
-        Data.submitScore();
+        // Data.submitScore();
       }, 2000);
     }
 

@@ -1,24 +1,21 @@
 {
-  "name": "nko2017-pixelbeach",
+  "name": "pixelbeach",
+  "productName": "Pixel Beach",
   "version": "1.0.0",
   "private": true,
   "description": "A surfing game",
-  "main": "index.js",
+  "author": "Nathan Hoad",
+  "main": "src/index.js",
   "scripts": {
-    "heroku-postbuild": "npm run build",
-    "watch": "rm -rf ./dist && webpack -w",
-    "build": "rm -rf ./dist && webpack",
-    "start": "node src/server",
-    "db": "knex",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "engines": {
     "node": "8.9.1",
     "npm": "5.5.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/Hackbit/nko2017-pixelbeach.git"
   },
   "contributors": [
     "Nathan Hoad",
@@ -27,61 +24,34 @@
     "Jaap van Hardeveld"
   ],
   "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/Hackbit/nko2017-pixelbeach/issues"
-  },
-  "homepage": "https://github.com/Hackbit/nko2017-pixelbeach#readme",
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": [
-              "> 1%",
-              "last 2 versions",
-              "Firefox ESR"
-            ]
-          }
-        }
-      ]
-    ]
-  },
   "dependencies": {
     "chance": "^1.0.12",
-    "es6-promise": "^4.1.1",
-    "hapi": "^16.6.2",
-    "hapi-auth-jwt": "^4.0.0",
     "immutable": "^3.8.2",
-    "inert": "^4.2.1",
-    "invariant": "^2.2.2",
-    "isomorphic-fetch": "^2.2.1",
-    "joi": "^13.0.1",
-    "jsonwebtoken": "^8.1.0",
-    "knex": "^0.14.0",
-    "pg": "^7.4.0",
+    "jest": "^21.2.1",
     "phaser-ce": "^2.9.2",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "uglifyjs-webpack-plugin": "^1.0.1",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "webpack": "^3.8.1"
   },
   "devDependencies": {
-    "@orange-games/phaser-spine": "^3.0.9",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
-    "exports-loader": "^0.6.4",
-    "expose-loader": "^0.7.3",
-    "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^2.30.1",
-    "jest": "^21.2.1",
-    "webpack": "^3.8.1"
+    "electron": "^1.7.9",
+    "electron-builder": "^19.47.1"
   },
   "prettier": {
     "printWidth": 120,
     "singleQuote": true,
     "tabWidth": 2,
     "useTabs": false
+  },
+  "build": {
+    "appId": "net.nathanhoad.pixelbeach",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "linux": {
+      "target": "deb"
+    },
+    "deb": {
+      "compression": "gz"
+    }
   }
 }

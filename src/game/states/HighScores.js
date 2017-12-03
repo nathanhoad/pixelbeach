@@ -57,9 +57,9 @@ class HighScores {
       this.scoreTexts.push(text);
     }
 
-    Data.loadHighScores().then(scores => {
-      this.scores = scores;
-    });
+    // Data.loadHighScores().then(scores => {
+    //   this.scores = scores;
+    // });
 
     // Fade in
     this.game.camera.flash('#000', 300, true);

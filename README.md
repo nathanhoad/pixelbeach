@@ -1,5 +1,19 @@
 # Pixel Beach
 
+## TODO for release
+
+- [x] Get Electron working
+- [x] Remove server
+- [x] Remove collectables
+- [ ] Add in basic surfer
+- [ ] Add in time/multiplyer based collectables
+- [x] Remove Spine
+- [ ] Remove music
+- [ ] Add in new music for menu, game, lose, win
+- [ ] Add tricks to game
+
+
+
 ## Ideas
 
 Obstacles

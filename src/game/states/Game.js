@@ -1,123 +1,205 @@
+const Scene = require('./Scene');
+
 const Data = require('../data');
-const Chance = require('chance');
 
 const ACCELERATION = 30;
 const MAX_VERTICAL_SPEED = 400;
 const UPPER_BOUND = 200;
 const LOWER_BOUND = 400;
+const TIME = Phaser.Timer.MINUTE;
+
 let isEmitting = false;
-let timer, timerEvent;
 
 const ITEMS = {
-  collectables: [{ sprite: 'beachball', animates: true, scale: 1, points: 10 }],
-  obstacles: [{ sprite: 'mine', animates: true, scale: 1, name: 'Mine' }]
+  collectables: [{ sprite: 'star' }],
+  obstacles: [{ sprite: 'mine', name: 'Mine' }]
 };
 
 // For fast checking to which a sprite belongs using array.includes (collision)
-const COLLECTABLE_SPRITES = ITEMS.collectables.map(col => col.sprite);
-const OBSTACLE_SPRITES = ITEMS.obstacles.map(col => col.sprite);
-const MAX_POINTS = Math.max(...ITEMS.collectables.map(col => col.points));
-const COLLECTABLE_WEIGHTS = ITEMS.collectables.map(col => {
-  const penalty = Math.ceil((col.points + 1) / 3);
-  return MAX_POINTS - penalty;
-});
+const COLLECTABLE_SPRITES = ITEMS.collectables.map(c => c.sprite);
+const OBSTACLE_SPRITES = ITEMS.obstacles.map(c => c.sprite);
 
-class GameState {
+class GameState extends Scene {
   create() {
     Data.reset();
+    this.score = 0;
 
-    this.game.add.sprite(0, 0, 'game-background');
-    const waveTop = this.game.add.sprite(150, 177, 'game-wave-top');
-    waveTop.animations.add('foam');
-    waveTop.animations.play('foam', 6, true);
+    this.add.sprite(0, 0, 'game-background');
+    this.waveTop = this.add.sprite(150, 177, 'game-wave-top');
+    this.waveTop.animations.add('foam');
+    this.waveTop.animations.play('foam', 6, true);
 
     // Float some clouds
-    this.clouds = this.game.add.group();
+    this.clouds = this.add.group();
     this.clouds.enableBody = true;
     this.clouds.physicsBodyType = Phaser.Physics.ARCADE;
     this.createCloud(150, 60);
-    this.createCloud(this.game.world.width - 50, 120);
+    this.createCloud(this.world.width - 50, 120);
 
     // Create some speed lines
-    this.speedLines = this.game.add.group();
+    this.speedLines = this.add.group();
     this.speedLines.enableBody = true;
     this.speedLines.physicsBodyType = Phaser.Physics.ARCADE;
     this.createSpeedLine(630, 300);
     this.createSpeedLine(10, 380);
 
     // Group for any sprites
-    this.sprites = this.game.add.group();
+    this.sprites = this.add.group();
     this.sprites.enableBody = true;
     this.sprites.physicsBodyType = Phaser.Physics.ARCADE;
 
     // Create the player
     this.player = this.sprites.create(250, LOWER_BOUND, 'player');
+    this.player.anchor.set(0.5);
+    this.player.animations.add('idle', [0, 1, 2, 3, 4], 12, true);
+    this.player.animations.add('up', [5], 6, true);
+    this.player.animations.add('down', [6], 6, true);
 
     // Particles
-    this.wash = this.game.add.emitter(100, 100, 200);
+    this.wash = this.add.emitter(100, 100, 200);
     // this.wash.gravity = 200;
     this.wash.makeParticles(['surfer-wash-1', 'surfer-wash-2']);
     this.wash.maxParticleSpeed = new Phaser.Point(-100, 50);
     this.wash.minParticleSpeed = new Phaser.Point(-200, -50);
+    this.wash.minParticleAlpha = 0.5;
     this.wash.minRotation = 0;
     this.wash.maxRotation = 0;
+    this.wash.width = 20;
+    this.wash.height = 3;
+    this.wash.start(false, 5000, 20);
+
+    this.splashEmitter = this.add.emitter(100, 100, 200);
+    this.splashEmitter.makeParticles(['surfer-wash-1', 'surfer-wash-2']);
+    this.splashEmitter.gravity = 200;
+    this.splashEmitter.maxParticleSpeed = new Phaser.Point(-100, 50);
+    this.splashEmitter.minParticleSpeed = new Phaser.Point(-200, -50);
+    this.splashEmitter.minParticleAlpha = 0.6;
+    this.splashEmitter.minRotation = 0;
+    this.splashEmitter.maxRotation = 0;
+    this.splashEmitter.width = 32;
+    this.splashEmitter.height = 5;
+
+    // Background music
+    this.playMusic('game-music');
 
     // Audio
-    this.pickUp = this.game.add.audio('pickup');
-    this.fail = this.game.add.audio('fail');
-    this.trick2 = this.game.add.audio('trick2');
-
-    this.soundtrack = new Phaser.Sound(this.game, 'soundtrack', 1, true);
-
-    // Play the soundtrack
-    // this.soundtrack.play();
-
-    // Turn the fucking volume down
-    this.pickUp.volume = 0.05;
-    this.fail.volume = 0.05;
-    this.trick2.volume = 0.05;
-    this.soundtrack.volume = 0.01;
-
-    this.wash.start(false, 5000, 20);
+    this.pickUp = this.add.audio('pickup');
+    this.pickUp.volume = 0.5;
+    this.collectSound = this.add.audio('collect-sound');
+    this.collectSound.volume = 0.5;
+    this.fail = this.add.audio('fail');
+    this.fail.volume = 0.5;
+    this.trick2 = this.add.audio('trick2');
+    this.trick2.volume = 0.5;
+    this.clockSound = this.add.audio('clock-sound');
+    this.clockSound.volume = 0.5;
+    this.timeoutSound = this.add.audio('time-out-sound');
+    this.correctArrowSound = this.add.audio('correct-arrow-sound');
+    this.correctArrowSound.volume = 0.5;
+    this.splashSound = this.add.audio('splash-sound');
+    this.splashSound.volume = 0.5;
+    this.explosionSound = this.add.audio('explosion-sound');
 
     // Keep track of how much air you should get
     this.playerMomentum = 1;
 
     // Items
-    this.lastCollisionDistance = 0;
+    this.chanceForObstacleBonus = 0;
     this.nextItemCountdown = 100;
-    this.itemsChance = new Chance(); // put in a level seed here!
 
-    // this.collectableIcon = this.sprites.create(10, 10, 'ducky-icon');
-    this.collectableText = this.game.add.text(70, 20, '0', {
+    this.hintText = this.add.text(this.world.width / 2, this.world.height / 2 + 50, this.__('hint'), {
+      font: '18px Arial',
+      fill: 'white'
+    });
+    this.hintText.smoothed = false;
+    this.hintText.anchor.set(0.5);
+    this.hintText.alpha = 0;
+
+    const hintTween = this.add.tween(this.hintText).to({ alpha: 0.8 }, 500, Phaser.Easing.Linear.None, true, 1500);
+    hintTween.onStart.add(() => {
+      if (this.hasStarted) {
+        hintTween.stop();
+      }
+    });
+
+    // Score text
+    this.scoreText = this.add.text(30, 20, '0', {
       font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'left',
-      boundsAlignV: 'middle'
+      boundsAlignV: 'middle',
+      stroke: '#000000',
+      strokeThickness: 5
     });
+    this.scoreText.smoothed = false;
+    this.scoreText.anchor.set(0.5);
 
-    // Countdown
-    this.countDown = this.game.add.text(0, 0, '0', {
+    this.multiplierText = this.add.text((this.world.width - 40) / 5 * 2, 20, this.__('multiplier', { multiplier: 1 }), {
       font: 'bold 20px Arial',
       fill: 'white',
       boundsAlignH: 'center',
-      boundsAlignV: 'middle'
+      boundsAlignV: 'middle',
+      stroke: '#000000',
+      strokeThickness: 5
     });
-    this.countDown.setTextBounds(0, 20, this.game.world.width, 20);
+    this.multiplierText.smoothed = false;
+    this.multiplierText.anchor.set(0.5);
 
-    // timer
-    timer = this.game.time.create();
-    timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
-    timer.start();
+    this.timer = this.time.create();
+    this.timerEvent = this.timer.add(TIME, this.endTimer, this);
+    for (let i = 1; i <= 3; i++) {
+      this.timer.add(TIME - Phaser.Timer.SECOND * i, () => {
+        this.countDownText.fill = '#c00';
+        this.popText(this.countDownText);
+        this.timeoutSound.play();
+      });
+    }
+    this.timer.start();
 
-    const wave = this.game.add.sprite(-40, UPPER_BOUND - 41, 'game-wave');
-    wave.animations.add('foam');
-    wave.animations.play('foam', 6, true);
+    this.waveBarrel = this.add.sprite(-40, UPPER_BOUND - 41, 'game-wave');
+    this.waveBarrel.animations.add('foam');
+    this.waveBarrel.animations.play('foam', 6, true);
+
+    // Tricks
+    this.arrows = this.add.group();
+    this.arrows.x = 100;
+    this.arrows.y = 100;
+
+    // Countdown
+    this.countDownText = this.add.text(this.world.width / 2, 20, '1:00', {
+      font: 'bold 22px Arial',
+      fill: '#ffd400',
+      boundsAlignH: 'center',
+      boundsAlignV: 'middle',
+      stroke: '#000000',
+      strokeThickness: 5
+    });
+    this.countDownText.smoothed = false;
+    // this.countDownText.setShadow(0, 2, '#000000', 0);
+    this.countDownText.anchor.set(0.5);
+    this.add
+      .tween(this.countDownText)
+      .from({ x: this.world.width / 2, y: this.world.height / 2 }, 500, Phaser.Easing.Quartic.InOut, true, 500);
+    this.add.tween(this.countDownText.scale).from({ x: 2, y: 2 }, 500, Phaser.Easing.Quartic.InOut, true, 500);
+
+    this.CONGRATS = [
+      this.__('congratulations.cowabunga'),
+      this.__('congratulations.radical'),
+      this.__('congratulations.cool'),
+      this.__('congratulations.totally_tubular'),
+      this.__('congratulations.far_out'),
+      this.__('congratulations.gnarly')
+    ];
 
     // Fade in
-    this.game.camera.flash('#000', 500, true);
+    this.fadeIn();
 
-    this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+    // This stops the browser from getting certain key presses
+    const { UP, DOWN, LEFT, RIGHT, SPACEBAR, ENTER, ESC } = Phaser.Keyboard;
+    this.input.keyboard.addKeyCapture([UP, DOWN, LEFT, RIGHT, SPACEBAR, ENTER, ESC]);
+    this.input.keyboard.addKey(ENTER).onDown.add(() => {
+      this.game.paused = !this.game.paused;
+    });
 
     // Mode
     this.mode = 'playing';
@@ -130,9 +212,13 @@ class GameState {
         this.handleItems();
         this.handleCollisions();
         this.handleScore();
-        if (timer.running) {
-          this.countDown.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
+        if (this.timer.running) {
+          this.millisecondsRemaining = Math.max(0, this.timerEvent.delay - this.timer.ms);
+          this.countDownText.text = this.formatTime(this.millisecondsRemaining);
         } else {
+          this.countDownText.text = this.formatTime(0);
+          this.timeoutSound.play();
+          this.popText(this.countDownText);
           this.gameOver();
         }
 
@@ -149,15 +235,20 @@ class GameState {
   handlePlayer() {
     let isTricking = false;
 
-    this.wash.x = this.player.x - 10;
-    this.wash.y = this.player.y + 10;
+    this.wash.x = this.player.x - 14;
+    this.wash.y = this.player.y + 6;
+    this.wash.on = this.player.y > UPPER_BOUND;
 
     // Movement
     if (this.player.y < UPPER_BOUND) {
-      // Player is in the sky
+      // Player is in the sky (this will only fire once per sky bit)
       if (this.player.body.gravity.y === 0) {
         this.trick2.play();
-        // 500 is the lowest gravity
+
+        // set up tricks
+        this.handleTrick(true);
+
+        // 500 is the lowest gravity (sends the player to the top of the screen)
         let gravity;
         if (this.playerMomentum > 160) {
           gravity = 450;
@@ -173,12 +264,22 @@ class GameState {
         this.playerMomentum = 0;
       }
     } else {
+      if (this.player.body.gravity.y > 0) {
+        // Remove the trick handling
+        this.handleTrick(false);
+        this.splashSound.play();
+        this.splashEmitter.x = this.player.x + 5;
+        this.splashEmitter.y = this.player.y + 30;
+        this.splashEmitter.explode(5000, 10);
+      }
+
       this.player.body.gravity.y = 0;
 
-      if (this.game.input.activePointer.isDown || this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
+      if (this.input.activePointer.isDown || this.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {
         // The player has actually done something so we can start
         // generating collectables and obstacles
         this.hasStarted = true;
+        this.hintText.alpha = 0;
 
         this.playerMomentum = Math.max(this.playerMomentum, this.player.y - UPPER_BOUND);
 
@@ -207,38 +308,138 @@ class GameState {
       }
     }
 
-    if (this.player.y < UPPER_BOUND) {
-      isTricking = true;
-    } else {
-      isTricking = false;
-    }
-
     // Animations
-    // if (this.player.body.velocity.y < 0) {
-    //   if (this.surfer.anim !== 'idle-up') {
-    //     this.surfer.setAnimationByName(0, 'idle-up', true);
-    //     this.surfer.anim = 'idle-up';
-    //   }
-    // } else if (this.player.body.velocity.y > 0) {
-    //   if (this.surfer.anim !== 'idle-down') {
-    //     this.surfer.setAnimationByName(0, 'idle-down', true);
-    //     this.surfer.anim = 'idle-down';
-    //   }
-    // } else {
-    //   if (this.surfer.anim !== 'idle') {
-    //     this.surfer.setAnimationByName(0, 'idle', true);
-    //     this.surfer.anim = 'idle';
-    //   }
-    // }
-
-    if (isTricking) {
-      this.wash.on = false;
-      isEmitting = false;
+    if (this.player.y > LOWER_BOUND - 10) {
+      this.player.animations.play('idle');
+    } else {
+      if (this.player.body.velocity.y < 0) {
+        this.player.animations.play('up');
+      } else if (this.player.body.velocity.y > 0) {
+        this.player.animations.play('down');
+      }
     }
+  }
 
-    if (!isTricking && !isEmitting) {
-      this.wash.start(false, 5000, 20);
-      isEmitting = true;
+  handleTrick(enable) {
+    if (enable) {
+      const { UP, DOWN, LEFT, RIGHT, SPACEBAR } = Phaser.Keyboard;
+
+      this.trickWasResolved = false; // This is for stopping the leave animations clobbering each other
+
+      this.trick = [];
+      const trickStepCount = Math.min(Math.ceil(1 + Data.get('multiplier') / 2), 7);
+      for (let i = 0; i < trickStepCount; i++) {
+        this.trick.push(this.rnd.pick([UP, DOWN, LEFT, RIGHT]));
+      }
+
+      this.trickIndex = 0;
+      this.trick.forEach((key, i) => {
+        let direction;
+        switch (key) {
+          case UP:
+            direction = 'up';
+            break;
+          case DOWN:
+            direction = 'down';
+            break;
+          case LEFT:
+            direction = 'left';
+            break;
+          case RIGHT:
+            direction = 'right';
+            break;
+        }
+        let arrow = this.arrows.getFirstDead(true, 50 * i, 0, 'arrow-' + direction);
+        arrow.anchor.set(0.5);
+        arrow.tint = 0xffffff;
+      });
+      this.arrows.x = (this.world.width - this.arrows.width) / 2;
+
+      // Handle keys
+      this.input.keyboard.onUpCallback = e => {
+        if ([UP, DOWN, LEFT, RIGHT].includes(e.keyCode)) {
+          if (this.trick[this.trickIndex] === e.keyCode) {
+            this.arrows.getAt(this.trickIndex).tint = 0xffd400;
+            this.correctArrowSound.play();
+
+            // Mark off this trick and up the index
+            this.trickIndex++;
+            if (this.trickIndex === this.trick.length) {
+              let index = 0;
+              this.arrows.forEachAlive(arrow => {
+                const t = this.add
+                  .tween(arrow)
+                  .to(
+                    { x: -this.arrows.x + this.world.width / 2, y: -this.arrows.y + 40 },
+                    400,
+                    Phaser.Easing.Quartic.In,
+                    false,
+                    100 * index
+                  );
+                t.onComplete.add(() => {
+                  // Add 500ms to the clock
+                  this.timer.events.forEach((event, i) => {
+                    event.tick += 500;
+                    event.delay += 500;
+                  });
+
+                  this.clockSound.play();
+                  this.popText(this.countDownText);
+                  this.flyText('+00:00:50', this.world.width / 2, 20, 'down');
+                  arrow.kill();
+                });
+                t.start();
+                index++;
+              });
+
+              Data.addTrick();
+              Data.addMultiplier();
+              this.popText(this.multiplierText);
+              this.flyText(this.__('plus_x', { points: 1 }), this.multiplierText.x, this.multiplierText.y, 'down');
+
+              this.flyText(
+                this.CONGRATS[this.rnd.between(0, this.CONGRATS.length - 1)],
+                this.world.width / 2,
+                this.arrows.y,
+                'down'
+              );
+
+              this.trickWasResolved = true;
+              this.handleTrick(false);
+            }
+          } else {
+            this.arrows.getAt(this.trickIndex).tint = 0x000000;
+            if (Data.get('multiplier') > 1) {
+              this.flyText(
+                this.__('minus_x', { points: Data.get('multiplier') - 1 }),
+                this.multiplierText.x,
+                this.multiplierText.y,
+                'down',
+                '#cc2222'
+              );
+            }
+            Data.resetMultiplier();
+            this.handleTrick(false);
+          }
+        }
+      };
+    } else {
+      // Remove any trick indicators
+      this.input.keyboard.onUpCallback = null;
+      if (!this.trickWasResolved) {
+        this.fail.play();
+        this.trickWasResolved = true;
+        let index = 0;
+        this.arrows.forEachAlive(arrow => {
+          const t = this.add
+            .tween(arrow)
+            .to({ y: this.world.height + arrow.height }, 400, Phaser.Easing.Quartic.In, true, 100 * index);
+          t.onComplete.add(() => {
+            arrow.kill();
+          });
+          index++;
+        });
+      }
     }
   }
 
@@ -247,58 +448,62 @@ class GameState {
     // done something
     if (!this.hasStarted) return;
 
+    if (this.millisecondsRemaining < 3000) return;
+
     // Create a new item
     if (this.nextItemCountdown === 0) {
-      // TODO: have some smarts over whether to create a collectable or an obstacle
-      const isObstacle = this.itemsChance.bool({
-        likelihood: 5 + Math.min(55, this.lastCollisionDistance / 4000 * 55)
-      });
-      const itemConfig = isObstacle
-        ? this.itemsChance.pickone(ITEMS.obstacles)
-        : this.itemsChance.weighted(ITEMS.collectables, COLLECTABLE_WEIGHTS);
-
-      const y = UPPER_BOUND + 20 + Math.random() * (LOWER_BOUND - UPPER_BOUND - 20);
-
-      let item = this.sprites.getFirstDead(true, this.game.world.width + 50, y, itemConfig.sprite);
-      item.scale.x = itemConfig.scale || 1.5;
-      item.scale.y = itemConfig.scale || 1.5;
-      if (itemConfig.animates) {
-        item.animations.add('sheet');
-        item.animations.play('sheet', 7, true);
-      }
+      // The chance of getting a mine goes up for every time its not a mine
+      // and goes down by a bit for every mine
+      const isObstacle = this.rnd.between(1, 100) > 40 + this.chanceForObstacleBonus;
 
       if (isObstacle) {
-        item.isObstacle = true;
+        this.chanceForObstacleBonus = Math.max(0, this.chanceForObstacleBonus - 6);
       } else {
-        item.isCollected = false;
+        this.chanceForObstacleBonus = Math.min(50, this.chanceForObstacleBonus + 2);
       }
 
-      item.checkWorldBounds = true;
-      item.events.onOutOfBounds.removeAll();
-      item.events.onOutOfBounds.add(target => {
-        if (target.x < -20 || target.y < -20) {
-          // TODO: remove any attached spines here
-          target.kill();
+      const itemConfig = isObstacle ? this.rnd.pick(ITEMS.obstacles) : ITEMS.collectables[0];
+      const y = this.rnd.between(UPPER_BOUND + 40, LOWER_BOUND - 40);
+
+      // Make bunches of stars
+      const itemCount = isObstacle ? 1 : this.rnd.between(1, 8);
+      for (let i = 0; i < itemCount; i++) {
+        let item = this.sprites.getFirstDead(
+          true,
+          this.world.width + 50 + i * 40,
+          y + this.rnd.between(-5, 5),
+          itemConfig.sprite
+        );
+        item.anchor.set(0.5);
+        item.animations.add('a');
+        item.animations.play('a', 10, true);
+
+        if (isObstacle) {
+          item.isObstacle = true;
+        } else {
+          item.isCollected = false;
         }
-      });
 
-      item.body.velocity.x = -200;
-
-      this.nextItemCountdown =
-        100 -
-        this.itemsChance.integer({
-          min: Math.min(50, Math.floor(this.lastCollisionDistance / 1000 * 50)),
-          max: 80
+        item.checkWorldBounds = true;
+        item.events.onOutOfBounds.removeAll();
+        item.events.onOutOfBounds.add(target => {
+          if (target.x < -20 || target.y < -20) {
+            target.kill();
+          }
         });
+
+        item.body.velocity.x = -200;
+      }
+
+      this.nextItemCountdown = 100 + this.rnd.between(itemCount * 5, itemCount * 8);
     } else {
       this.nextItemCountdown--;
     }
   }
 
   handleCollisions() {
-    this.lastCollisionDistance++;
     // Handle collions with obstacles and collectables
-    this.game.physics.arcade.collide(
+    this.physics.arcade.collide(
       this.player,
       this.sprites,
       (p, s) => {
@@ -308,25 +513,29 @@ class GameState {
         if (COLLECTABLE_SPRITES.includes(s.key)) {
           if (!s.isCollected) {
             let itemConfig = ITEMS.collectables.find(item => item.sprite === s.key);
-            this.pickUp.play();
+            // TODO: make a swoosh sound
+            this.collectSound.play();
             s.isCollected = true;
             s.body.velocity.x = 0;
-            this.game.physics.arcade.moveToXY(s, 10, 10, 1500);
-            setTimeout(() => {
-              this.collectableIcon.kill();
-              this.collectableIcon = this.sprites.getFirstDead(true, 10, 10, s.key);
-            }, 200);
-            // TODO: put a score thing in the corner where this flies to and add stuff to it
 
-            // TODO: different points for different things
-            // and multipliers
-            Data.addPoints(itemConfig.points);
-            // Data.collectCollectable();
+            const points = Data.get('multiplier');
+            this.flyText(this.__('plus_x', { points }), s.x, s.y, 'up');
+
+            this.add
+              .tween(s)
+              .to({ x: 30, y: 20 }, 300, Phaser.Easing.Linear.None, true)
+              .onComplete.add(() => {
+                Data.addPoints(points);
+                Data.addStar();
+                this.pickUp.play();
+                this.popText(this.scoreText);
+
+                s.kill();
+              });
           }
           return false;
         } else if (OBSTACLE_SPRITES.includes(s.key)) {
-          this.lastCollisionDistance = 0;
-          this.fail.play();
+          this.explosionSound.play();
 
           const reason = ITEMS.obstacles.find(o => o.sprite === s.key).name;
           this.gameOver(true, reason);
@@ -334,68 +543,68 @@ class GameState {
         } else {
           return true;
         }
-
-        // switch (s.key) {
-        //   case 'item':
-        //   case 'ducky':
-
-        //   case 'obstacle':
-        //     // TODO: Custom death animation based on obstacle
-        //     // ...
-
-        //   default:
-        //     return true;
-        // }
       }
     );
   }
 
   handleScore() {
-    this.collectableText.text = Data.get('points');
+    this.score = Data.get('points');
+    this.scoreText.text = this.score;
+
+    this.multiplierText.text = this.__('multiplier', { multiplier: Data.get('multiplier') });
   }
 
   gameOver(died, reason) {
+    if (this.explosion) {
+      this.explosion.x = this.player.x;
+      this.explosion.y = this.player.y;
+    }
+
     if (this.mode === 'gameover') return;
+
+    this.input.keyboard.onUpCallback = null;
 
     if (died) {
       Data.died(reason);
 
-      this.game.camera.onFlashComplete.add(() => {
-        this.game.camera.onFlashComplete.removeAll();
-        this.game.camera.onFadeComplete.add(() => {
-          this.game.camera.onFadeComplete.removeAll();
-          this.game.state.start('summary');
-        });
-        this.game.camera.fade(0xff0000, 200);
-      });
-      this.game.camera.flash(0xff0000, 200);
+      this.explosion = this.add.sprite(this.player.x, this.player.y, 'explosion');
+      this.explosion.anchor.set(0.5);
+      this.explosion.animations.add('explode', [0, 1, 2, 3], 6);
+      this.explosion.animations.play('explode');
+
+      this.fadeMusic(200, 0);
       this.player.body.velocity.x = -200;
+      this.wash.on = false;
+      this.flash('#ff0000', 100, 2, 'summary');
     } else {
-      this.game.camera.onFadeComplete.add(() => {
-        this.game.camera.onFadeComplete.removeAll();
-        this.game.state.start('summary');
-      });
-      this.game.camera.fade(0xffffff, 400);
+      if (this.player.y > UPPER_BOUND) {
+        this.player.animations.play('idle');
+        this.add.tween(this.player).to({ x: this.world.width }, 800, Phaser.Easing.Quartic.In, true);
+        this.add.tween(this.waveBarrel).to({ x: -50 }, 800, Phaser.Easing.Linear.None, true);
+      }
+
+      this.fadeMusic(700, 0);
+      this.fadeOut('#ffffff', 800, 'summary');
     }
 
     this.player.body.velocity.y = 0;
 
     this.mode = 'gameover';
-    // this.surfer.anim = 'idle';
   }
 
   endTimer() {
-    timer.stop();
+    this.timer.stop();
   }
 
-  formatTime(s) {
-    const minutes = '0' + Math.floor(s / 60);
-    const seconds = '0' + (s - minutes * 60);
-    return minutes.substr(-2) + ':' + seconds.substr(-2);
+  formatTime(milliseconds) {
+    const minutes = Math.floor(milliseconds / 60 / 1000);
+    const seconds = Math.floor((milliseconds - minutes * 60 * 1000) / 1000);
+    milliseconds = Math.floor((milliseconds - seconds * 1000) / 10);
+    return ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2) + ':' + ('0' + milliseconds).substr(-2);
   }
 
   createCloud(x, y) {
-    x = x || this.game.world.width + 100;
+    x = x || this.world.width + 100;
     y = y || Math.random() * 200;
 
     let cloud = this.clouds.getFirstDead(true, x, y, 'menu-cloud');
@@ -403,7 +612,7 @@ class GameState {
     cloud.events.onOutOfBounds.removeAll();
     cloud.events.onOutOfBounds.add(target => {
       if (target.x < 0 - target.width) {
-        target.x = this.game.world.width + target.width;
+        target.x = this.world.width + target.width;
       }
     });
 
@@ -411,7 +620,7 @@ class GameState {
   }
 
   createSpeedLine(x, y) {
-    x = x || this.game.world.width + 100;
+    x = x || this.world.width + 100;
     y = y || Math.random() * 200;
 
     const speedLine = this.speedLines.getFirstDead(true, x, y, 'speed-line');
@@ -421,7 +630,7 @@ class GameState {
     speedLine.events.onOutOfBounds.removeAll();
     speedLine.events.onOutOfBounds.add(target => {
       if (target.x < 0 - target.width) {
-        target.x = this.game.world.width + target.width;
+        target.x = this.world.width + target.width;
         target.y = UPPER_BOUND + 50 + Math.floor(Math.random() * (LOWER_BOUND - UPPER_BOUND));
       }
     });
@@ -429,4 +638,5 @@ class GameState {
     speedLine.body.velocity.x = -800;
   }
 }
+
 module.exports = GameState;

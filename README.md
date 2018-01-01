@@ -1,58 +1,23 @@
 # Pixel Beach
 
-## TODO for release
+## Aseperite export
 
-- [x] Get Electron working
-- [x] Remove server
-- [x] Remove collectables
-- [ ] Add in basic surfer
-- [ ] Add in time/multiplyer based collectables
-- [x] Remove Spine
-- [ ] Remove music
-- [ ] Add in new music for menu, game, lose, win
-- [ ] Add tricks to game
+eg.
 
+`ase -b --split-layers surfer.ase --sheet surfer.png --data surfer.json`
 
+## Exporting multi tiff for DMG background
 
-## Ideas
+https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html#//apple_ref/doc/uid/TP40012302-CH7-SW13
 
-Obstacles
+eg.
 
-* guy in inner tube
-* seagull
-* mine
-* demodog/gorgon
-* whale
-* shark
-* dolphin
-* giant rubber duck
+`tiffutil -cathidpicheck ./build/dmg-background.png ./build/dmg-background@2x.png -out ./build/dmg-background.tiff`
 
-Collectables
+## Build with signing cert
 
-* trophies?
-* starfish?
-* floating numbers to add to your score?
-* david hasselhoff
+eg.
 
-Achievements
+Export the certs to the `build` dir: [https://www.electron.build/code-signing](https://www.electron.build/code-signing)
 
-* Wipe out
-* Picnic
-* Sunburn
-* Pipe dream
-
-Cool shit
-
-* if you can pick the demogorgan from stranger things the whole level should be upside down
-
-Catch phrases
-
-* tubular
-* radical
-* surfs up
-* gnarly
-* not bad for a grom
-* sweet as
-* cowabunga
-* hang ten
-* wicked
+`CSC_LINK=./build/certificates.p12 CSC_KEY_PASSWORD=<PASSWORD> npm run dist -- -m`

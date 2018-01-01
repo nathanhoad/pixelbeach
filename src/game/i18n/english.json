@@ -1,0 +1,50 @@
+{
+  "menu": {
+    "start": "Hit the waves",
+    "scores": "Scores",
+    "about": "About",
+    "exit": "Exit to DOS",
+    "try_again": "Try again",
+    "back_to_menu": "Main menu"
+  },
+
+  "hint": "Press spacebar to go up the wave",
+
+  "multiplier": "x {multiplier}",
+  "plus_x": "+{points}",
+  "minus_x": "-{points}",
+
+  "about": "About",
+
+  "your_scores": "Your Scores",
+  "high_score": "High score",
+  "high_score_x": "High score: {points}",
+
+  "total_deaths": "Total Deaths",
+  "total_stars": "Total Stars",
+  "total_tricks": "Total Tricks",
+  "highest_multiplier": "Highest bonus",
+
+  "bummer": "Bummer, you died",
+  "you_scored_x_points": {
+    "one": "You scored {points} point",
+    "other": "You scored {points} points"
+  },
+
+  "congratulations": {
+    "cowabunga": "Cowabunga!",
+    "radical": "Radical!",
+    "cool": "Cool!",
+    "totally_tubular": "Totally Tubular!",
+    "far_out": "Hang ten!",
+    "gnarly": "Gnarly!"
+  },
+
+  "credits": {
+    "designed_and_developed_by": "Designed & developed by",
+    "additional_development": "Additional development",
+    "music_by": "Music",
+    "box_illustration_by": "Illustration",
+    "effects": "Water Effects"
+  }
+}

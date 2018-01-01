@@ -18,7 +18,7 @@ function createWindow() {
     fullscreen: true,
     // kiosk: true, // This is a good way to go full screen but removes the title bar
     webPreferences: {
-      devTools: true
+      devTools: !process.env.DIST
     }
   });
 

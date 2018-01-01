@@ -1,0 +1,50 @@
+{
+  "menu": {
+    "start": "Comenzar el juego",
+    "scores": "Resultados",
+    "about": "Información",
+    "exit": "Salida",
+    "try_again": "Inténtalo de nuevo",
+    "back_to_menu": "Menú principal"
+  },
+
+  "hint": "Presione la barra espaciadora para subir las olas",
+
+  "multiplier": "x {multiplier}",
+  "plus_x": "+{points}",
+  "minus_x": "-{points}",
+
+  "about": "Información",
+
+  "your_scores": "Tus resultados",
+  "high_score": "Mejor resultado",
+  "high_score_x": "Mejor resultado: {points}",
+
+  "total_deaths": "Muertes",
+  "total_stars": "Estrellas",
+  "total_tricks": "Trucos",
+  "highest_multiplier": "Mejor bonificacióna",
+
+  "bummer": "Lástima, tu muriste",
+  "you_scored_x_points": {
+    "one": "Tienes {points} puntos",
+    "other": "Tienes {points} punto"
+  },
+
+  "congratulations": {
+    "cowabunga": "¡Cowabunga!",
+    "radical": "¡Radical!",
+    "cool": "¡Cool!",
+    "totally_tubular": "¡Increíble!",
+    "far_out": "¡Magnífico!",
+    "gnarly": "¡Gnarly!"
+  },
+
+  "credits": {
+    "designed_and_developed_by": "Diseñado y desarrollado por",
+    "additional_development": "Más desarrollo",
+    "music_by": "Música",
+    "box_illustration_by": "Ilustración",
+    "effects": "Efectos del agua"
+  }
+}

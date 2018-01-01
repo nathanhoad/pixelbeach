@@ -1,40 +1,61 @@
 const Immutable = require('immutable');
+const DataManager = require('./DataManager');
 
-class Data {
-  constructor() {
-    this.state = Immutable.Map({
-      collectables: 0,
+class Data extends DataManager {
+  getDefaultState() {
+    return Immutable.Map({
+      highestScore: 0,
+
+      totalDeaths: 0,
+      totalStars: 0,
+      totalTricks: 0,
+      highestMultiplier: 0,
+
       points: 0,
-      pointMultiplier: 1,
-      userName: null,
+      multiplier: 1,
       died: false,
       diedReason: null
     });
   }
 
-  get(key, defaultValue) {
-    return this.state.get(key, defaultValue);
-  }
-
   reset() {
-    this.state = this.state
-      .set('died', false)
-      .set('diedReason', null)
-      .set('collectables', 0)
-      .set('points', 0)
-      .set('pointMultiplier', 1);
+    this.state = this.state.merge({
+      points: 0,
+      multiplier: 1,
+      died: false,
+      diedReason: null
+    });
   }
 
   died(reason) {
     this.state = this.state.set('died', true).set('diedReason', reason);
-  }
-
-  addMultiplier() {
-    this.state = this.state.update('pointMultiplier', m => m + 1);
+    this.state = this.state.update('totalDeaths', d => d + 1);
   }
 
   addPoints(points) {
     this.state = this.state.update('points', p => p + points);
+    if (this.state.get('points') > this.state.get('highestScore')) {
+      this.state = this.state.set('highestScore', this.state.get('points'));
+    }
+  }
+
+  addStar() {
+    this.state = this.state.update('totalStars', s => s + 1);
+  }
+
+  addTrick() {
+    this.state = this.state.update('totalTricks', t => t + 1);
+  }
+
+  addMultiplier() {
+    this.state = this.state.update('multiplier', m => m + 1);
+    if (this.state.get('multiplier') > this.state.get('highestMultiplier')) {
+      this.state = this.state.set('highestMultiplier', this.state.get('multiplier'));
+    }
+  }
+
+  resetMultiplier() {
+    this.state = this.state.set('multiplier', 1);
   }
 }
 

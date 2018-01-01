@@ -1,0 +1,50 @@
+{
+  "menu": {
+    "start": "Lass uns loslegen!",
+    "scores": "Punkte",
+    "about": "Über uns",
+    "exit": "Exit",
+    "try_again": "Versuch's noch mal",
+    "back_to_menu": "Kontrollmenü"
+  },
+
+  "hint": "Spring hoch in die Luft mit der Leertaste um Tricks in der Luft zu tun",
+
+  "multiplier": "x {multiplier}",
+  "plus_x": "+{points}",
+  "minus_x": "-{points}",
+
+  "about": "Über uns",
+
+  "your_scores": "Deine Punkte",
+  "high_score": "High score",
+  "high_score_x": "High score: {points}",
+
+  "total_deaths": "Todesfälle",
+  "total_stars": "Sternen",
+  "total_tricks": "Tricks",
+  "highest_multiplier": "Höchster Bonus",
+
+  "bummer": "Schade, du bist tot",
+  "you_scored_x_points": {
+    "one": "Du hast {points} Punkt",
+    "other": "Du hast {points} Punkte"
+  },
+
+  "congratulations": {
+    "cowabunga": "Cowabunga!",
+    "radical": "Radikal!",
+    "cool": "Cool!",
+    "totally_tubular": "Hammer!",
+    "far_out": "Toll!",
+    "gnarly": "Gnarly!"
+  },
+
+  "credits": {
+    "designed_and_developed_by": "Entworfen und entwickelt von",
+    "additional_development": "Zusätzliche Entwicklung",
+    "music_by": "Musik",
+    "box_illustration_by": "Illustration",
+    "effects": "Effekten"
+  }
+}

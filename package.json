@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Surf's up!",
-  "author": "Nathan Hoad",
+  "author": "Nathan Hoad <nathan@nathanhoad.net>",
   "main": "src/index.js",
   "scripts": {
     "test": "jest --runInBand",
@@ -46,7 +46,8 @@
       "title": "Pixel Beach"
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+      "category": "Game"
     },
     "deb": {
       "compression": "gz"

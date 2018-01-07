@@ -1,4 +1,5 @@
 const Scene = require('./Scene');
+const Character = require('../Character');
 
 const Data = require('../data');
 
@@ -49,11 +50,7 @@ class GameState extends Scene {
     this.sprites.physicsBodyType = Phaser.Physics.ARCADE;
 
     // Create the player
-    this.player = this.sprites.create(250, LOWER_BOUND, 'player');
-    this.player.anchor.set(0.5);
-    this.player.animations.add('idle', [0, 1, 2, 3, 4], 12, true);
-    this.player.animations.add('up', [5], 6, true);
-    this.player.animations.add('down', [6], 6, true);
+    this.player = this.sprites.add(new Character(this.game, 250, LOWER_BOUND, 'surfer'));
 
     // Particles
     this.wash = this.add.emitter(100, 100, 200);
@@ -310,12 +307,12 @@ class GameState extends Scene {
 
     // Animations
     if (this.player.y > LOWER_BOUND - 10) {
-      this.player.animations.play('idle');
+      this.player.playAnimation('idle');
     } else {
       if (this.player.body.velocity.y < 0) {
-        this.player.animations.play('up');
+        this.player.playAnimation('up');
       } else if (this.player.body.velocity.y > 0) {
-        this.player.animations.play('down');
+        this.player.playAnimation('down');
       }
     }
   }
@@ -578,7 +575,7 @@ class GameState extends Scene {
       this.flash('#ff0000', 100, 2, 'summary');
     } else {
       if (this.player.y > UPPER_BOUND) {
-        this.player.animations.play('idle');
+        this.player.playAnimation('idle');
         this.add.tween(this.player).to({ x: this.world.width }, 800, Phaser.Easing.Quartic.In, true);
         this.add.tween(this.waveBarrel).to({ x: -50 }, 800, Phaser.Easing.Linear.None, true);
       }

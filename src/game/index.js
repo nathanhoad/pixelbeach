@@ -12,8 +12,6 @@ game.state.add('summary', require('./states/Summary'));
 game.state.add('scores', require('./states/Scores'));
 game.state.add('about', require('./states/About'));
 
-// TODO: maybe move the background music manager here?
-
 // TODO: attach the data thing here
 
 // Start the game already

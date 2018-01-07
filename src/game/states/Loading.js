@@ -1,5 +1,7 @@
+const guessRootPath = require('guess-root-path');
 const Resolution = require('../../resolution');
 const { factor } = Resolution.getGameSize();
+const Character = require('../Character');
 
 class LoadingState {
   preload() {
@@ -11,12 +13,15 @@ class LoadingState {
     this.game.renderer.renderSession.roundPixels = true;
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
+    // Define where to find loadable files
+    this.game.load.path = guessRootPath() + '/src/';
+
     // Audio
     this.load.audio('game-music', './game/audio/game.mp3');
     this.load.audio('menu-music', './game/audio/title.mp3');
     this.load.audio('died-music', './game/audio/died.mp3');
 
-    //setDecodedCallback
+    //setDecodedCallback -> for when music was loaded
 
     // Menus
     this.load.image('menu-background', './game/sprites/menu-background.png');
@@ -28,6 +33,7 @@ class LoadingState {
     this.load.image('summary-background', './game/sprites/summary-background.png');
 
     // Game
+    Character.load(this.game, 'surfer', './game/sprites/surfer.json');
     this.load.spritesheet('player', './game/sprites/surfer.png', 32, 32, 7);
     this.load.spritesheet('summary-surfer', './game/sprites/summary-surfer.png', 32, 32, 5);
     this.load.image('surfer-wash-1', './game/sprites/surfer-wash-1.png');

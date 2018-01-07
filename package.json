@@ -18,9 +18,15 @@
     "node": "8.9.1",
     "npm": "5.5.1"
   },
-  "contributors": ["Nathan Hoad", "Lilly Piri", "Ben Hoad", "Jaap van Hardeveld"],
+  "contributors": [
+    "Nathan Hoad",
+    "Lilly Piri",
+    "Ben Hoad",
+    "Jaap van Hardeveld"
+  ],
   "license": "UNLICENSED",
   "dependencies": {
+    "guess-root-path": "^1.0.0",
     "immutable": "^3.8.2",
     "jest": "^21.2.1",
     "node-icns": "0.0.4",

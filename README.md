@@ -4,7 +4,7 @@
 
 eg.
 
-`ase -b --split-layers surfer.ase --sheet surfer.png --data surfer.json`
+`ase -b --split-layers --list-layers --list-tags surfer.ase --sheet surfer.png --data surfer.json`
 
 ## Exporting multi tiff for DMG background
 

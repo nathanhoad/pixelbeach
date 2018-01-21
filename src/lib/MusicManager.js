@@ -19,8 +19,6 @@ class MusicManager {
     volume = first(volume, 1);
     loop = first(loop, true);
 
-    console.log('current?', this.currentMusic);
-
     // Don't play the same music if it's already playing
     if (this.currentMusic && key === this.currentMusic.key) {
       this.currentMusic.volume = volume;
@@ -31,8 +29,6 @@ class MusicManager {
     if (this.currentMusic && this.currentMusic.isPlaying) {
       this.currentMusic.stop();
     }
-
-    console.log('setting the music to', key, volume, loop);
 
     this.currentMusic = this.game.sound.play(key, volume, loop);
   }

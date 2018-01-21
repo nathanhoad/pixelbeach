@@ -1,4 +1,4 @@
-const Scene = require('./Scene');
+const Scene = require('../../lib/Scene');
 
 class SummaryScene extends Scene {
   create() {

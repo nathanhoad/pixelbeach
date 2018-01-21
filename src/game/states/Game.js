@@ -1,5 +1,5 @@
-const Scene = require('./Scene');
-const Character = require('../Character');
+const Scene = require('../../lib/Scene');
+const Character = require('../../lib/Character');
 
 const Data = require('../data');
 
@@ -7,7 +7,8 @@ const ACCELERATION = 30;
 const MAX_VERTICAL_SPEED = 400;
 const UPPER_BOUND = 200;
 const LOWER_BOUND = 400;
-const TIME = Phaser.Timer.MINUTE;
+const TIME = Phaser.Timer.SECOND * 30;
+const TIME_BONUS = 1000;
 
 let isEmitting = false;
 
@@ -101,7 +102,7 @@ class GameState extends Scene {
     this.playerMomentum = 1;
 
     // Items
-    this.chanceForObstacleBonus = 0;
+    this.chanceForObstacleBonus = 50;
     this.nextItemCountdown = 100;
 
     this.hintText = this.add.text(this.world.width / 2, this.world.height / 2 + 50, this.__('hint'), {
@@ -376,13 +377,13 @@ class GameState extends Scene {
                 t.onComplete.add(() => {
                   // Add 500ms to the clock
                   this.timer.events.forEach((event, i) => {
-                    event.tick += 500;
-                    event.delay += 500;
+                    event.tick += TIME_BONUS;
+                    event.delay += TIME_BONUS;
                   });
 
                   this.clockSound.play();
                   this.popText(this.countDownText);
-                  this.flyText('+00:00:50', this.world.width / 2, 20, 'down');
+                  this.flyText('+00:01', this.world.width / 2, 20, 'down');
                   arrow.kill();
                 });
                 t.start();
@@ -451,12 +452,15 @@ class GameState extends Scene {
     if (this.nextItemCountdown === 0) {
       // The chance of getting a mine goes up for every time its not a mine
       // and goes down by a bit for every mine
-      const isObstacle = this.rnd.between(1, 100) > 40 + this.chanceForObstacleBonus;
+      this.randomIsObstacle = this.rnd.between(1, 100);
+      const isObstacle = this.randomIsObstacle < this.chanceForObstacleBonus;
 
       if (isObstacle) {
-        this.chanceForObstacleBonus = Math.max(0, this.chanceForObstacleBonus - 6);
+        // It was a mine so lower the chance of getting another mine
+        this.chanceForObstacleBonus = Math.max(0, this.chanceForObstacleBonus - 8);
       } else {
-        this.chanceForObstacleBonus = Math.min(50, this.chanceForObstacleBonus + 2);
+        // It wasn't a mine so up the chance for a mine
+        this.chanceForObstacleBonus = Math.min(100, this.chanceForObstacleBonus + 2);
       }
 
       const itemConfig = isObstacle ? this.rnd.pick(ITEMS.obstacles) : ITEMS.collectables[0];
@@ -597,7 +601,7 @@ class GameState extends Scene {
     const minutes = Math.floor(milliseconds / 60 / 1000);
     const seconds = Math.floor((milliseconds - minutes * 60 * 1000) / 1000);
     milliseconds = Math.floor((milliseconds - seconds * 1000) / 10);
-    return ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2) + ':' + ('0' + milliseconds).substr(-2);
+    return ('0' + minutes).substr(-2) + ':' + ('0' + seconds).substr(-2); //+ ':' + ('0' + milliseconds).substr(-2);
   }
 
   createCloud(x, y) {

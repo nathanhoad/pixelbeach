@@ -1,5 +1,5 @@
 const Immutable = require('immutable');
-const DataManager = require('./DataManager');
+const DataManager = require('../lib/DataManager');
 
 class Data extends DataManager {
   getDefaultState() {
@@ -30,6 +30,10 @@ class Data extends DataManager {
   died(reason) {
     this.state = this.state.set('died', true).set('diedReason', reason);
     this.state = this.state.update('totalDeaths', d => d + 1);
+  }
+
+  doublePoints() {
+    this.addPoints(this.state.get('points'));
   }
 
   addPoints(points) {

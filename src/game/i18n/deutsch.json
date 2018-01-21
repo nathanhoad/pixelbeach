@@ -30,6 +30,7 @@
     "one": "Du hast {points} Punkt",
     "other": "Du hast {points} Punkte"
   },
+  "finish_bonus": "x2 Strand Bonus",
 
   "congratulations": {
     "cowabunga": "Cowabunga!",

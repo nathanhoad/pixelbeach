@@ -20,4 +20,6 @@ eg.
 
 Export the certs to the `build` dir: [https://www.electron.build/code-signing](https://www.electron.build/code-signing)
 
-`CSC_LINK=./build/certificates.p12 CSC_KEY_PASSWORD=<PASSWORD> npm run dist -- -m`
+`CSC_LINK=./build/mac-certificates.p12 CSC_KEY_PASSWORD=<PASSWORD> npm run dist -- -m`
+
+`CSC_LINK=./build/windows-certificates.p12 CSC_KEY_PASSWORD=<PASSWORD> npm run dist -- -w`

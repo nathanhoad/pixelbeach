@@ -1,4 +1,4 @@
-const Scene = require('./Scene');
+const Scene = require('../../lib/Scene');
 
 class MenuState extends Scene {
   create() {

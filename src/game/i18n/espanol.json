@@ -30,6 +30,7 @@
     "one": "Tienes {points} puntos",
     "other": "Tienes {points} punto"
   },
+  "finish_bonus": "x2 Playa Extra",
 
   "congratulations": {
     "cowabunga": "¡Cowabunga!",

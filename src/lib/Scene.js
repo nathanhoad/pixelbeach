@@ -1,7 +1,7 @@
-const i18n = require('../i18n');
-const { first } = require('../util');
-const MusicManager = require('../MusicManager');
-const EffectsManager = require('../EffectsManager');
+const i18n = require('./i18n');
+const { first } = require('./util');
+const MusicManager = require('./MusicManager');
+const EffectsManager = require('./EffectsManager');
 
 class Scene {
   constructor(game) {
@@ -9,7 +9,7 @@ class Scene {
     this.music = game.music = game.music || new MusicManager(game);
     this.effects = game.effects = game.effects || new EffectsManager(game);
 
-    // TODO: make a sprite manager to keep the player between scenes?
+    // TODO: make a character manager to keep the player between scenes?
   }
 
   /**

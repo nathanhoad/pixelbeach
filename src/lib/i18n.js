@@ -1,10 +1,12 @@
 let locale;
 let translations;
 
+// TODO: rework this so that it doesn't hard code where the translations are
+
 module.exports = function(key, args) {
   if (!translations || locale !== localStorage.getItem('language')) {
     locale = localStorage.getItem('language');
-    translations = require('./' + locale + '.json');
+    translations = require('../game/i18n/' + locale + '.json');
   }
 
   // Use object notation

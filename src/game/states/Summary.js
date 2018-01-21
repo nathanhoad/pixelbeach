@@ -32,6 +32,8 @@ class SummaryState extends SummaryScene {
     this.wash.height = 3;
     this.wash.start(false, 200, 30);
 
+    const basePoints = Data.get('points');
+
     if (Data.get('died')) {
       this.playMusic('died-music', 0.5, false);
       title = this.__('bummer');
@@ -41,23 +43,25 @@ class SummaryState extends SummaryScene {
       const surferTween = this.add.tween(this.surfer).to({ y: 220 }, 2000, Phaser.Easing.Circular.Out, true, 400, 0);
       surferTween.onComplete.addOnce(() => {
         this.surfer.animations.play('sit_up');
+        this.flyText(this.__('finish_bonus'), this.scoreText.x, this.scoreText.y, 'up', '#fff');
+        this.popText(this.scoreText);
+
+        Data.doublePoints();
+        this.scoreText.text = this.__('you_scored_x_points', { points: Data.get('points') });
+
+        if (Data.get('points') > Data.get('highestScore')) {
+          this.bestScoreText.text = this.__('high_score_x', { points: Data.get('highestScore') });
+        }
       });
     }
-
-    Data.saveState();
 
     this.createTitle(title);
 
     // You scored
-    this.scoreText = this.add.text(
-      this.world.width / 2,
-      120,
-      this.__('you_scored_x_points', { points: Data.get('points') }),
-      {
-        font: 'bold 20px Arial',
-        fill: 'white'
-      }
-    );
+    this.scoreText = this.add.text(this.world.width / 2, 120, this.__('you_scored_x_points', { points: basePoints }), {
+      font: 'bold 20px Arial',
+      fill: 'white'
+    });
     this.scoreText.anchor.set(0.5);
     this.scoreText.alpha = 0;
     this.scoreText.smoothed = false;
@@ -91,6 +95,8 @@ class SummaryState extends SummaryScene {
         action: () => this.fadeOut('#000', 500, 'menu')
       }
     ]);
+
+    Data.saveState();
 
     this.fadeIn(Data.get('died') ? '#ff0000' : '#ffffff', 300);
   }

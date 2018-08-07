@@ -18,12 +18,16 @@
     "node": "8.9.1",
     "npm": "5.5.1"
   },
-  "contributors": ["Nathan Hoad", "Lilly Piri", "Ben Hoad", "Jaap van Hardeveld"],
-  "license": "UNLICENSED",
+  "contributors": [
+    "Nathan Hoad",
+    "Lilly Piri",
+    "Ben Hoad",
+    "Jaap van Hardeveld"
+  ],
+  "license": "cc-by-sa-4.0",
   "dependencies": {
     "guess-root-path": "^1.0.0",
     "immutable": "^3.8.2",
-    "jest": "^21.2.1",
     "node-icns": "0.0.4",
     "phaser-ce": "^2.9.2"
   },
@@ -49,7 +53,10 @@
     "linux": {
       "target": {
         "target": "deb",
-        "arch": ["x64", "ia32"]
+        "arch": [
+          "x64",
+          "ia32"
+        ]
       },
       "category": "Game",
       "desktop": {
@@ -60,16 +67,6 @@
     },
     "deb": {
       "compression": "gz"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "zip"
-        },
-        {
-          "target": "nsis"
-        }
-      ]
     }
   }
 }

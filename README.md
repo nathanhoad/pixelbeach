@@ -1,25 +1,37 @@
 # Pixel Beach
 
-## Aseperite export
+The source code for [Pixel Beach](https://nathanhoad.itch.io/pixel-beach)
 
-eg.
+## History
 
-`ase -b --split-layers --list-layers --list-tags surfer.ase --sheet surfer.png --data surfer.json`
+Pixel Beach was originally written in 48 hours for Node Knockout 2017 by Nathan Hoad, Lilly Piri, Ben Hoad, and Jaap van Hardeveld.
 
-## Exporting multi tiff for DMG background
+A few weeks after the competition, I decided to see how hard it would be to flesh out the gameplay a bit more and turn it into a standalone Electron app.
 
-https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html#//apple_ref/doc/uid/TP40012302-CH7-SW13
+## Development
 
-eg.
+To start:
 
-`tiffutil -cathidpicheck ./build/dmg-background.png ./build/dmg-background@2x.png -out ./build/dmg-background.tiff`
+```bash
+npm i
+npm start
+```
 
-## Build with signing cert
+To build
 
-eg.
+```bash
+npm run dist -- -m # build for macOS
+npm run dist -- -w # build for Windows
+npm run dist -- -l # build for Linux
+```
 
-Export the certs to the `build` dir: [https://www.electron.build/code-signing](https://www.electron.build/code-signing)
+## Credits
 
-`CSC_LINK=./build/mac-certificates.p12 CSC_KEY_PASSWORD=<PASSWORD> npm run dist -- -m`
+- Nathan Hoad - [@nathanhoad](https://twitter.com/nathanhoad)
+- Lilly Piri - [@lillypiri](https://twitter.com/lillypiri)
+- Ben Hoad - [@benhoad](https://twitter.com/benhoad)
+- Jaap van Hardeveld - [@jaaprood](https://twitter.com/jaaprood)
 
-`CSC_LINK=./build/windows-certificates.p12 CSC_KEY_PASSWORD=<PASSWORD> npm run dist -- -w`
+## License
+
+Pixel Beach is licensed under [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
